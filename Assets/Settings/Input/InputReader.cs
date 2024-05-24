@@ -1,17 +1,14 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Controls;
 
 
-[CreateAssetMenu(menuName ="SO/InputReader")]
+[CreateAssetMenu(menuName = "SO/InputReader")]
 public class InputReader : ScriptableObject, IPlayerActions
 {
     public Vector2 Movement { get; private set; }
-    
+
     private Controls _controls;
 
     public event Action OnPunchKeyEvent;
@@ -28,21 +25,23 @@ public class InputReader : ScriptableObject, IPlayerActions
         }
         _controls.Player.SetCallbacks(this);
         _controls.Player.Enable();
+
     }
 
     public void OnCounter(InputAction.CallbackContext context)
     {
-        OnCounterKeyEvent?.Invoke();
+        if(context.performed) OnCounterKeyEvent?.Invoke();
+
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        OnJumpKeyEvent?.Invoke();
+        if (context.performed) OnJumpKeyEvent?.Invoke();
     }
 
     public void OnKick(InputAction.CallbackContext context)
     {
-        OnKickKeyEvent?.Invoke();
+        if (context.performed) OnKickKeyEvent?.Invoke();
     }
 
     public void OnMovement(InputAction.CallbackContext context)
@@ -52,11 +51,11 @@ public class InputReader : ScriptableObject, IPlayerActions
 
     public void OnPunch(InputAction.CallbackContext context)
     {
-        OnPunchKeyEvent?.Invoke();
+        if (context.performed) OnPunchKeyEvent?.Invoke();
     }
 
     public void OnSkill(InputAction.CallbackContext context)
     {
-        OnSkillEvent?.Invoke();
+        if (context.performed) OnSkillEvent?.Invoke();
     }
 }
