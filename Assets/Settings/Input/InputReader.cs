@@ -17,6 +17,7 @@ public class InputReader : ScriptableObject, IPlayerActions
     public event Action OnJumpKeyEvent;
     public event Action OnSkillEvent;
 
+
     private void OnEnable()
     {
         if (_controls == null)
