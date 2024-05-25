@@ -4,7 +4,6 @@ using UnityEngine;
 public class DamageCaster : MonoBehaviour
 {
     public LayerMask layerMask;
-    public bool atcSuc;
 
     [Header("Setting")]
     public int damage;
@@ -23,53 +22,51 @@ public class DamageCaster : MonoBehaviour
     {
         if (currentTime > comboTime)
         {
+            Attack.Instance.atking = false;
             comboCount = 0;
         }
         else
         {
             currentTime += Time.deltaTime;
         }
-        if (comboCount == 0)
-        {
-            damage = DamageList[0];
-        }
-        else if (comboCount == 1)
-        {
-            damage = DamageList[1];
-        }
-        else if (comboCount == 2)
-        {
-            damage = DamageList[2];
-        }
-        else if (comboCount >= 3)
+
+        if (comboCount >= 3)
         {
             comboCount = 0;
             currentTime = 0;
         }
+        else
+        {
+            damage = DamageList[comboCount];
+        }
     }
     public void CastDamage()
     {
-        if (Time.time > lastAtkTime)
+        if (!Attack.Instance.atking)
         {
-            comboCount++;
-            atcSuc = true;
-            currentTime = 0;
-            lastAtkTime = Time.time + cooltime;
-            Collider2D colliider = Physics2D.OverlapBox(transform.position, boxSize, layerMask);
-
-            Debug.Log(damage);
-            if (colliider)
+            if (Time.time > lastAtkTime)
             {
-                if (colliider.TryGetComponent(out Health health))
+                comboCount++;
+                Attack.Instance.atking = true;
+                currentTime = 0;
+                lastAtkTime = Time.time + cooltime;
+                Collider2D colliider = Physics2D.OverlapBox(transform.position, boxSize, layerMask);
+
+                Debug.Log(damage);
+                if (colliider)
                 {
-                    Vector2 direction = colliider.transform.position - transform.position;
+                    if (colliider.TryGetComponent(out Health health))
+                    {
+                        Vector2 direction = colliider.transform.position - transform.position;
 
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, direction.magnitude, layerMask);
+                        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, direction.magnitude, layerMask);
 
-                    health.TakeDamage(damage, hit.normal, hit.point, knockbackPower);
+                        health.TakeDamage(damage, hit.normal, hit.point, knockbackPower);
+                    }
                 }
             }
         }
+
     }
 
 #if UNITY_EDITOR
