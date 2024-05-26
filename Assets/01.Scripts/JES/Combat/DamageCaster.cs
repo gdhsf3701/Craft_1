@@ -44,10 +44,10 @@ public class DamageCaster : MonoBehaviour
     {
         if (!Attack.Instance.atking)
         {
+                Attack.Instance.atking = true;
             if (Time.time > lastAtkTime)
             {
                 comboCount++;
-                Attack.Instance.atking = true;
                 currentTime = 0;
                 lastAtkTime = Time.time + cooltime;
                 Collider2D colliider = Physics2D.OverlapBox(transform.position, boxSize, layerMask);
