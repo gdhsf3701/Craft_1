@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     [SerializeField] private AgentMovement _movement;
-
+    [SerializeField] private Punch _punchCompo;
+    [SerializeField] private Kick _KickCompo;
     private Animator _animator;
 
     private readonly int _idleHash = Animator.StringToHash("Idle");
@@ -18,6 +19,7 @@ public class PlayerAnimator : MonoBehaviour
         _animator = GetComponent<Animator>();
         _movement.isGround.OnValueChanged += HandleGroundChanged;
         Attack.Instance.attacking.OnValueChanged += HandleAttackChanged;
+        _punchCompo._Player.PlayerInput.OnPunchKeyEvent += PunchComboAni;
     }
 
     private void HandleGroundChanged(bool prev, bool next)
@@ -36,6 +38,13 @@ public class PlayerAnimator : MonoBehaviour
             _animator.SetBool(_idleHash, false);
             _animator.SetBool(_runHash, false);
         }
+        _animator.SetInteger("PunchCombo", _punchCompo.damageCompo.comboCount);
+
+    }
+
+    public void PunchComboAni()
+    {
+        _animator.SetInteger("PunchCombo", _punchCompo.damageCompo.comboCount);
     }
     private void FixedUpdate()
     {
@@ -55,5 +64,9 @@ public class PlayerAnimator : MonoBehaviour
             _animator.SetBool(_idleHash, true);
             _animator.SetBool(_runHash, false);
         }
+    }
+    public void AnimEndTrriger()
+    {
+        Attack.Instance.attacking.Value = false;
     }
 }

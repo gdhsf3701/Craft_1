@@ -4,7 +4,7 @@ using UnityEngine;
 public class DamageCaster : MonoBehaviour
 {
     public LayerMask layerMask;
-
+    public PlayerAnimator _animatorCompo;
     [Header("Setting")]
     public int damage;
     public float knockbackPower;
@@ -21,16 +21,13 @@ public class DamageCaster : MonoBehaviour
     {
         if (!Attack.Instance.attacking.Value)
         {
+            currentTime += Time.deltaTime;
             if (currentTime > comboTime)
             {
                 comboCount = 0;
-            }
-            else
-            {
-                currentTime += Time.deltaTime;
+                _animatorCompo.PunchComboAni();
             }
         }
-
         if (comboCount >= 3)
         {
             comboCount = 0;
