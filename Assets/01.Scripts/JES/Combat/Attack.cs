@@ -4,6 +4,5 @@ using UnityEngine;
 
 public class Attack : MonoSingleton<Attack>
 {
-    public bool atking;
-
+    public NotifyValue<bool> attacking;
 }
