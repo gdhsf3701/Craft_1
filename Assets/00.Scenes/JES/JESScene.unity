@@ -290,11 +290,13 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
+  _animatorCompo: {fileID: 1024128363}
   damage: 10
   knockbackPower: 0
   cooltime: 0.8
   boxSize: {x: 1.13, y: 0.47}
   DamageList: 0a000000140000001e000000
+  comboCount: 0
 --- !u!114 &985933336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,6 +309,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 320c4f963146a1d478a6b40bcf8aedd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Player: {fileID: 1714380607}
+  damageCompo: {fileID: 985933335}
 --- !u!1 &1024128358
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,6 +431,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movement: {fileID: 1714380606}
+  _punchCompo: {fileID: 985933336}
+  _KickCompo: {fileID: 1193084220}
 --- !u!1 &1154988807
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,11 +597,13 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
+  _animatorCompo: {fileID: 1024128363}
   damage: 0
   knockbackPower: 0
   cooltime: 0.8
   boxSize: {x: 0.83, y: 0.68}
   DamageList: 0b0000000c0000000d000000
+  comboCount: 0
 --- !u!114 &1193084220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -608,6 +616,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 702a9715f4a188f4989be29d6788f4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Player: {fileID: 1714380607}
+  damageCompo: {fileID: 1193084219}
 --- !u!1 &1201656225
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Kick : MonoBehaviour
 {
-    private Player _Player;
-    private DamageCaster damageCompo;
+    public Player _Player;
+    public DamageCaster damageCompo;
     private void Awake()
     {
         _Player = GetComponentInParent<Player>();   
