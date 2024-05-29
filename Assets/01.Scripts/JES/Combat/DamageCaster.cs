@@ -14,20 +14,21 @@ public class DamageCaster : MonoBehaviour
     private List<int> DamageList = new List<int>();
 
 
-    private int comboCount;
-    private float comboTime = 1f;
+    public int comboCount;
+    private float comboTime = 0.75f;
     private float currentTime;
-    private float lastAtkTime = 0f;
     private void Update()
     {
-        if (currentTime > comboTime)
+        if (!Attack.Instance.attacking.Value)
         {
-            Attack.Instance.atking = false;
-            comboCount = 0;
-        }
-        else
-        {
-            currentTime += Time.deltaTime;
+            if (currentTime > comboTime)
+            {
+                comboCount = 0;
+            }
+            else
+            {
+                currentTime += Time.deltaTime;
+            }
         }
 
         if (comboCount >= 3)
@@ -42,29 +43,26 @@ public class DamageCaster : MonoBehaviour
     }
     public void CastDamage()
     {
-        if (!Attack.Instance.atking)
+        if (!Attack.Instance.attacking.Value)
         {
-                Attack.Instance.atking = true;
-            if (Time.time > lastAtkTime)
+            comboCount++;
+            currentTime = 0;
+            Attack.Instance.attacking.Value = true;
+            Collider2D colliider = Physics2D.OverlapBox(transform.position, boxSize, layerMask);
+
+            Debug.Log(damage);
+            if (colliider)
             {
-                comboCount++;
-                currentTime = 0;
-                lastAtkTime = Time.time + cooltime;
-                Collider2D colliider = Physics2D.OverlapBox(transform.position, boxSize, layerMask);
-
-                Debug.Log(damage);
-                if (colliider)
+                if (colliider.TryGetComponent(out Health health))
                 {
-                    if (colliider.TryGetComponent(out Health health))
-                    {
-                        Vector2 direction = colliider.transform.position - transform.position;
+                    Vector2 direction = colliider.transform.position - transform.position;
 
-                        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, direction.magnitude, layerMask);
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, direction.magnitude, layerMask);
 
-                        health.TakeDamage(damage, hit.normal, hit.point, knockbackPower);
-                    }
+                    health.TakeDamage(damage, hit.normal, hit.point, knockbackPower);
                 }
             }
+
         }
 
     }
