@@ -39,7 +39,7 @@ public class PlayerAnimator : MonoBehaviour
     }
     public void PunchComboAni(int prev, int next)
     {
-        _animator.SetInteger("PunchCombo", ++next);
+        _animator.SetInteger("PunchCombo", next);
     }
     private void FixedUpdate()
     {

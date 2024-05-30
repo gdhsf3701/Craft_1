@@ -7,15 +7,20 @@ public class DamageCaster : MonoBehaviour
     [Header("Setting")]
     public int damage;
     public float knockbackPower;
-    public float cooltime;
     [SerializeField] private Vector2 boxSize;
     [SerializeField]
-    private List<int> DamageList = new List<int>();
-
+    private List<int> damageList = new List<int>();
+    [SerializeField]
+    private AgentMovement playerMovement;
 
     public NotifyValue<int> comboCount;
     private float comboTime = 0.75f;
     private float currentTime;
+
+    private void Start()
+    {
+        comboCount.Value = -1;
+    }
     private void Update()
     {
         if (!Attack.Instance.attacking.Value)
@@ -23,43 +28,43 @@ public class DamageCaster : MonoBehaviour
             currentTime += Time.deltaTime;
             if (currentTime > comboTime)
             {
-                comboCount.Value = 0;
+                comboCount.Value = -1;
             }
-        }
-        if (comboCount.Value >= 3)
-        {
-            comboCount.Value = 0;
-            currentTime = 0;
-        }
-        else
-        {
-            damage = DamageList[comboCount.Value];
         }
     }
     public void CastDamage()
     {
-        if (!Attack.Instance.attacking.Value)
+        if (playerMovement.isGround.Value&& Mathf.Abs(playerMovement._xMove)==0)
         {
-            comboCount.Value++;
-            currentTime = 0;
-            Attack.Instance.attacking.Value = true;
-            Collider2D colliider = Physics2D.OverlapBox(transform.position, boxSize, layerMask);
-
-            Debug.Log(damage);
-            if (colliider)
+            if (!Attack.Instance.attacking.Value)
             {
-                if (colliider.TryGetComponent(out Health health))
+                if (comboCount.Value ==2)
                 {
-                    Vector2 direction = colliider.transform.position - transform.position;
-
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, direction.magnitude, layerMask);
-
-                    health.TakeDamage(damage, hit.normal, hit.point, knockbackPower);
+                    comboCount.Value = -1;
                 }
+                comboCount.Value++;
+                
+                damage = damageList[comboCount.Value];
+
+                currentTime = 0;
+                Attack.Instance.attacking.Value = true;
+                Collider2D colliider = Physics2D.OverlapBox(transform.position, boxSize, layerMask);
+
+                Debug.Log(damage);
+                if (colliider)
+                {
+                    if (colliider.TryGetComponent(out Health health))
+                    {
+                        Vector2 direction = colliider.transform.position - transform.position;
+
+                        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, direction.magnitude, layerMask);
+
+                        health.TakeDamage(damage, hit.normal, hit.point, knockbackPower);
+                    }
+                }
+
             }
-
         }
-
     }
 
 #if UNITY_EDITOR
