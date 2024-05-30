@@ -60,5 +60,7 @@ public class Player : Agent
         MovementCompo.Jump();
     }
 
-
+    public override void SetDeadState()
+    {
+    }
 }

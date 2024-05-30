@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageCaster : MonoBehaviour
+public class PlayerDamageCaster : MonoBehaviour
 {
     public LayerMask layerMask;
     [Header("Setting")]

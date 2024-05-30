@@ -19,12 +19,7 @@ public class Health : MonoBehaviour
         ResetHealth();
     }
 
-    private void Awake()
-    {
-        ResetHealth();
-    }
-
-    private void ResetHealth()
+    public void ResetHealth()
     {
         _currentHealth = _maxHealth;
     }
