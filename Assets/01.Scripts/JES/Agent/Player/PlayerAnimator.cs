@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
@@ -19,32 +17,29 @@ public class PlayerAnimator : MonoBehaviour
         _animator = GetComponent<Animator>();
         _movement.isGround.OnValueChanged += HandleGroundChanged;
         Attack.Instance.attacking.OnValueChanged += HandleAttackChanged;
-        _punchCompo._Player.PlayerInput.OnPunchKeyEvent += PunchComboAni;
+        _punchCompo.damageCompo.comboCount.OnValueChanged += PunchComboAni;
     }
 
     private void HandleGroundChanged(bool prev, bool next)
     {
         _animator.SetBool(_jumpHash, next);
-        if (!next){
-            _animator.SetBool(_idleHash, false);
-            _animator.SetBool(_runHash, false);
-        }
+        if (!next)
+            OffIdleAndRun();
     }
     private void HandleAttackChanged(bool prev, bool next)
     {
         _animator.SetBool(_attackHash, next);
         if (next)
-        {
-            _animator.SetBool(_idleHash, false);
-            _animator.SetBool(_runHash, false);
-        }
-        _animator.SetInteger("PunchCombo", _punchCompo.damageCompo.comboCount);
-
+            OffIdleAndRun();
     }
-
-    public void PunchComboAni()
+    private void OffIdleAndRun()
     {
-        _animator.SetInteger("PunchCombo", _punchCompo.damageCompo.comboCount);
+        _animator.SetBool(_idleHash, false);
+        _animator.SetBool(_runHash, false);
+    }
+    public void PunchComboAni(int prev, int next)
+    {
+        _animator.SetInteger("PunchCombo", ++next);
     }
     private void FixedUpdate()
     {
@@ -54,16 +49,8 @@ public class PlayerAnimator : MonoBehaviour
 
     private void ChangeWalk(float absVelocity)
     {
-        if (absVelocity > 0)
-        {
-            _animator.SetBool(_idleHash, false);
-            _animator.SetBool(_runHash, true);
-        }
-        else
-        {
-            _animator.SetBool(_idleHash, true);
-            _animator.SetBool(_runHash, false);
-        }
+        _animator.SetBool(_idleHash, !(absVelocity > 0));
+        _animator.SetBool(_runHash, absVelocity > 0);
     }
     public void AnimEndTrriger()
     {

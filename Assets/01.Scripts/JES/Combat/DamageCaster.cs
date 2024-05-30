@@ -4,7 +4,6 @@ using UnityEngine;
 public class DamageCaster : MonoBehaviour
 {
     public LayerMask layerMask;
-    public PlayerAnimator _animatorCompo;
     [Header("Setting")]
     public int damage;
     public float knockbackPower;
@@ -14,7 +13,7 @@ public class DamageCaster : MonoBehaviour
     private List<int> DamageList = new List<int>();
 
 
-    public int comboCount;
+    public NotifyValue<int> comboCount;
     private float comboTime = 0.75f;
     private float currentTime;
     private void Update()
@@ -24,25 +23,24 @@ public class DamageCaster : MonoBehaviour
             currentTime += Time.deltaTime;
             if (currentTime > comboTime)
             {
-                comboCount = 0;
-                _animatorCompo.PunchComboAni();
+                comboCount.Value = 0;
             }
         }
-        if (comboCount >= 3)
+        if (comboCount.Value >= 3)
         {
-            comboCount = 0;
+            comboCount.Value = 0;
             currentTime = 0;
         }
         else
         {
-            damage = DamageList[comboCount];
+            damage = DamageList[comboCount.Value];
         }
     }
     public void CastDamage()
     {
         if (!Attack.Instance.attacking.Value)
         {
-            comboCount++;
+            comboCount.Value++;
             currentTime = 0;
             Attack.Instance.attacking.Value = true;
             Collider2D colliider = Physics2D.OverlapBox(transform.position, boxSize, layerMask);
