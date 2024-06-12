@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CSI_Item : MonoBehaviour
 {
-    private GameObject Player_item;
-    private bool can_get_item;
+    private GameObject Player_item,Player;
+    private bool can_get_item,can_change;
     private float speed = 1000;
     public bool itahamsu;
 
@@ -50,14 +51,23 @@ public class CSI_Item : MonoBehaviour
     {
         Player_item = GameObject.Find("Item_");
         Throw = false;
-
+        can_change = false;
+        Player = GameObject.Find("Player_CSI");
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F)&&can_get_item&& !Throw)
         {
-            if (Player_item.transform.childCount == 0)
+            if (can_change)
+            {
+                GameObject fire_item;
+                fire_item = Player_item.transform.GetChild(0).gameObject;
+                fire_item.transform.parent = null;
+                transform.position = Player_item.transform.position;
+                transform.parent = Player_item.transform;
+            }
+            else if (Player_item.transform.childCount == 0)
             {
                 transform.position = Player_item.transform.position;
                 transform.parent = Player_item.transform;
@@ -70,18 +80,34 @@ public class CSI_Item : MonoBehaviour
                 fire_item.GetComponent<CSI_Item>().Throw = true;
                 if (!itahamsu)
                 {
-                    fire_item.GetComponent<Rigidbody2D>().velocity += Vector2.right *Time.fixedDeltaTime * speed;
+                    if (Player.transform.position.x>0)
+                    {
+                        fire_item.GetComponent<Rigidbody2D>().velocity += Vector2.right *Time.fixedDeltaTime * speed;
+
+                    }
+                    else
+                    {
+                        fire_item.GetComponent<Rigidbody2D>().velocity += Vector2.left *Time.fixedDeltaTime * speed;
+
+                    }
                 }
                 else
                 {
                     startPos = fire_item.transform.position;
-                    endPos = startPos + new Vector3(10, 0, 0);
+                    if (Player.transform.position.x>0)
+                        endPos = startPos + new Vector3(10, 0, 0);
+                    else
+                    {
+                        endPos = startPos + new Vector3(-10, 0, 0);
+
+                    }
                     StartCoroutine("BulletMove");
                 }
 
             }
         }
     }
+
 
     private void Throwandthouch()
     {
@@ -92,13 +118,17 @@ public class CSI_Item : MonoBehaviour
     {
         if (!can_get_item && Throw &&!other.transform.CompareTag("Player"))
         {
-            if (true)
+            if (other.transform.CompareTag("Ground"))
             {
                 Throwandthouch();
             }
         }
         if (other.transform.CompareTag("Player"))
         {
+            if (Player_item.transform.childCount != 0)//손에 가지고 있다
+            {
+                can_change = true;
+            }
             can_get_item = true;
         }
     }
@@ -107,6 +137,10 @@ public class CSI_Item : MonoBehaviour
     {
         if (other.transform.CompareTag("Player"))
         {
+            if (Player_item.transform.childCount != 0)//손에 가지고 있다
+            {
+                can_change = false;
+            }
             can_get_item = false;
         }
     }
