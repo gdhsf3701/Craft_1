@@ -10,6 +10,7 @@ public class PlayerDamageCaster : MonoBehaviour
     [SerializeField] private Vector2 boxSize;
     [SerializeField]
     private List<int> damageList = new List<int>();
+
     [SerializeField]
     private AgentMovement playerMovement;
 

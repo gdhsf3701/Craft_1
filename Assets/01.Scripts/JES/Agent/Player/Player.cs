@@ -36,7 +36,8 @@ public class Player : Agent
     }
     private void Update()
     {
-        MovementCompo.SetMoveMent(PlayerInput.Movement.x);
+        if (!Attack.Instance.attacking.Value)
+            MovementCompo.SetMoveMent(PlayerInput.Movement.x);
         SpriteFlip(PlayerInput.Movement);
     }
 
@@ -56,8 +57,11 @@ public class Player : Agent
 
     private void JumpProcess()
     {
-        JumpEvent?.Invoke();
-        MovementCompo.Jump();
+        if (!Attack.Instance.attacking.Value)
+        {
+            JumpEvent?.Invoke();
+            MovementCompo.Jump();
+        }
     }
 
     public override void SetDeadState()

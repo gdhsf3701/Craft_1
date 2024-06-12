@@ -24,6 +24,7 @@ public abstract class Agent : MonoBehaviour
         HealthCompo.Initalize(this);
     }
 
+    
     public abstract void SetDeadState();
 
     #region Flip Character

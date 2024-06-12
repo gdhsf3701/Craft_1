@@ -14,9 +14,9 @@ TagManager:
   - Ground
   - Player
   - Enemy
+  - EnemyBullet
   - 
-  - 
-  - 
+  - DeadBody
   - 
   - 
   - 
@@ -40,4 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Agent
+    uniqueID: 3632057995
+    locked: 0
+  - name: Bullet
+    uniqueID: 3718895479
+    locked: 0
+  - name: Vfx
+    uniqueID: 1718243515
+    locked: 0
+  - name: Ui
+    uniqueID: 3615287435
     locked: 0

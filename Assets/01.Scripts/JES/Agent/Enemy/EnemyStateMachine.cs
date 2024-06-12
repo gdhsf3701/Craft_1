@@ -4,17 +4,17 @@ public class EnemyStateMachine
 {
     public EnemyState CurrentState { get; private set; }
 
-    public Dictionary<ZombieEnum, EnemyState> stateDictionary = new Dictionary<ZombieEnum, EnemyState>();
+    public Dictionary<EnemyEnum, EnemyState> stateDictionary = new Dictionary<EnemyEnum, EnemyState>();
 
     public Enemy _enemy;
-    public void Initalize(ZombieEnum startState, Enemy enemy)
+    public void Initalize(EnemyEnum startState, Enemy enemy)
     {
         _enemy = enemy;
         CurrentState = stateDictionary[startState];
         CurrentState.Enter();
     }
 
-    public void ChangeState(ZombieEnum newState, bool forceMode = false)
+    public void ChangeState(EnemyEnum newState, bool forceMode = false)
     {
         if (!_enemy.CanStateChangeable && !forceMode) return;
         if (_enemy.IsDead) return;
@@ -24,7 +24,7 @@ public class EnemyStateMachine
         CurrentState.Enter();
     }
 
-    public void AddState(ZombieEnum stateEnum, EnemyState enemyState)
+    public void AddState(EnemyEnum stateEnum, EnemyState enemyState)
     {
         stateDictionary.Add(stateEnum, enemyState);
     }

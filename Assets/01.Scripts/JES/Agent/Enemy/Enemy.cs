@@ -10,7 +10,6 @@ public abstract class Enemy : Agent
     public float attackRadius;
     public float attackCooldown,KnockbackPower;
     public int attackDamage;
-    //public LayerMask whatIsPlayer;
     public ContactFilter2D contactFilter;
 
     [HideInInspector] public Transform targerTrm = null;
@@ -22,6 +21,15 @@ public abstract class Enemy : Agent
     public EnemyDamageCaster DamageCasterCompo { get; protected set; }
 
     private Collider2D[] _colliders;
+
+    [Header("Gun Settings")]
+    [SerializeField]
+    private Transform muzzleTrm;
+    [SerializeField]
+    private int bulletDamage;
+    [SerializeField]
+    private float bulletKnockBack;
+
     protected override void Awake()
     {
         base.Awake();
@@ -49,6 +57,13 @@ public abstract class Enemy : Agent
         DamageCasterCompo.CastDamage(attackDamage, KnockbackPower);
     }
 
+    public virtual void FireBullet()
+    {
+        float x = targerTrm.position.x-transform.position.x;
+        EnemyBullet bullet = PoolManager.Instance.Pop("Enemybullet") as EnemyBullet;
+        bullet.InitAndFire(muzzleTrm,x,bulletDamage, bulletKnockBack);
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
@@ -56,7 +71,10 @@ public abstract class Enemy : Agent
         Gizmos.DrawWireSphere(transform.position, detectRadius);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRadius);
-        Gizmos.color = Color.white;
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, attackRadius-5);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRadius-8);
     }
 #endif
 
