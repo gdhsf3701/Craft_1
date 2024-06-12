@@ -300,13 +300,13 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
-  _animatorCompo: {fileID: 3721668863222890329}
   damage: 0
   knockbackPower: 0
-  cooltime: 0.8
   boxSize: {x: 0.83, y: 0.68}
-  DamageList: 0b0000000c0000000d000000
-  comboCount: 0
+  damageList: 0b0000000c0000000d000000
+  playerMovement: {fileID: 6722432555409048794}
+  comboCount:
+    _value: 0
 --- !u!114 &1065206266792963852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,13 +369,13 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
-  _animatorCompo: {fileID: 3721668863222890329}
   damage: 10
   knockbackPower: 0
-  cooltime: 0.8
   boxSize: {x: 1.13, y: 0.47}
-  DamageList: 0a000000140000001e000000
-  comboCount: 0
+  damageList: 0a000000140000001e000000
+  playerMovement: {fileID: 6722432555409048794}
+  comboCount:
+    _value: 0
 --- !u!114 &7048177331140639773
 MonoBehaviour:
   m_ObjectHideFlags: 0

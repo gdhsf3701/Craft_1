@@ -37,7 +37,8 @@ public class AgentMovement : MonoBehaviour
     }
     public void SetMoveMent(float xMove)
     {
-        _xMove = xMove;
+        if(!Attack.Instance.attacking.Value)
+            _xMove = xMove;
     }
 
     public void StopImmediately(bool isYStop = false)
@@ -55,9 +56,13 @@ public class AgentMovement : MonoBehaviour
 
     public void Jump(float multiplier = 1f)
     {
-        _timeInAir = 0;
-        rbCompo.velocity = Vector2.zero;
-        rbCompo.AddForce(Vector2.up * jumpPower * multiplier, ForceMode2D.Impulse);
+        if (!Attack.Instance.attacking.Value)
+        {
+            _timeInAir = 0;
+            rbCompo.velocity = Vector2.zero;
+            rbCompo.AddForce(Vector2.up * jumpPower * multiplier, ForceMode2D.Impulse);
+        }
+        
     }
     private void Update()
     {
