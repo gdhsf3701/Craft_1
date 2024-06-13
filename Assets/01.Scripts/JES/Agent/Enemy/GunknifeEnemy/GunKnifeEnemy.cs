@@ -32,6 +32,8 @@ public class GunKnifeEnemy : Enemy, Ipoolable
         stateMachine.AddState(EnemyEnum.Chase,new GunChaseState(this, stateMachine, "Chase"));
         stateMachine.AddState(EnemyEnum.Fire,new GunFireState(this, stateMachine, "Fire"));
         stateMachine.AddState(EnemyEnum.Dead,new GunDeadState(this, stateMachine, "Dead"));
+        stateMachine.AddState(EnemyEnum.KnifeChase,new GunKnifeChaseState(this, stateMachine, "KnifeChase"));
+        stateMachine.AddState(EnemyEnum.Attack,new GunAttackState(this, stateMachine, "Attack"));
 
         stateMachine.Initalize(EnemyEnum.Idle,this);
 

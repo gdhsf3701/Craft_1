@@ -265,7 +265,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4798058504378649488, guid: 580fc0bc25e6df5428f7016b92ccaecd, type: 3}
       propertyPath: filter.useDepth
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4798058504378649488, guid: 580fc0bc25e6df5428f7016b92ccaecd, type: 3}
+      propertyPath: filter.layerMask.m_Bits
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 6210541080066157097, guid: 580fc0bc25e6df5428f7016b92ccaecd, type: 3}
       propertyPath: m_Name
@@ -496,7 +500,6 @@ MonoBehaviour:
   targerTrm: {fileID: 0}
   lastAttackTime: 0
   muzzleTrm: {fileID: 1540406712}
-  bulletPrefab: {fileID: 7774984287089039716, guid: ee4179f83ac16334cabcce83ba69b7b7, type: 3}
   bulletDamage: 10
   bulletKnockBack: 0
   _poolName: GunKnifeEnemy

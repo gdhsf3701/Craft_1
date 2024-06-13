@@ -23,6 +23,10 @@ public class GunChaseState : EnemyState
             return;
         }
         _enemy.MovementCompo.SetMoveMent(Mathf.Sign(dir.x));
+        if(_enemy.attackRadius - 5 > dis)
+        {
+            _stateMachine.ChangeState(EnemyEnum.KnifeChase);
+        }
         if (_enemy.attackRadius > dis && _enemy.lastAttackTime + _enemy.attackCooldown < Time.time)
         {
             _stateMachine.ChangeState(EnemyEnum.Fire);
