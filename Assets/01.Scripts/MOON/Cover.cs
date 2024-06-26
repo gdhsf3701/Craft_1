@@ -9,6 +9,20 @@ public class Cover : MonoBehaviour
     // text는 상호작용 안 텍스트 (월드스페이스 캔버스)
     private bool _isPlayer = false;
 
+    GameObject _player;
+
+    Rigidbody2D rd;
+
+    SpriteRenderer renderer;
+    bool hide = false;
+
+    private void Start()
+    {
+        _player = GameObject.Find("Player");
+        rd = _player.GetComponent<Rigidbody2D>();
+        renderer = _player.GetComponentInChildren<SpriteRenderer>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         text.gameObject.SetActive(true);
@@ -22,11 +36,25 @@ public class Cover : MonoBehaviour
 
     private void Update()
     {
-        if (_isPlayer)
+        if (_isPlayer&&!hide)
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                // 상호작용 시 작동될 내용
+                _player.layer = 0;
+                renderer.enabled = false;
+                rd.bodyType = RigidbodyType2D.Static;
+                hide = true;
+                _player.transform.position = transform.position;
+            }
+        }
+        else if(_isPlayer && hide)
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                _player.layer = 7;
+                renderer.enabled = true;
+                hide = false;
+                rd.bodyType = RigidbodyType2D.Dynamic;
             }
         }
     }
