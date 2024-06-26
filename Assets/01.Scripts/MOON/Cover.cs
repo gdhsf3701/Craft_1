@@ -32,6 +32,7 @@ public class Cover : MonoBehaviour
     {
         text.gameObject.SetActive(false);
         _isPlayer = false;
+        print("ha");
     }
 
     private void Update()
@@ -40,11 +41,10 @@ public class Cover : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                _player.layer = 0;
-                renderer.enabled = false;
-                rd.bodyType = RigidbodyType2D.Static;
+                //_player.layer = 0;
+                renderer.color = Color.clear;
+                //rd.bodyType = RigidbodyType2D.Static;
                 hide = true;
-                _player.transform.position = transform.position;
             }
         }
         else if(_isPlayer && hide)
@@ -52,6 +52,7 @@ public class Cover : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.F))
             {
                 _player.layer = 7;
+                renderer.color = Color.white;
                 renderer.enabled = true;
                 hide = false;
                 rd.bodyType = RigidbodyType2D.Dynamic;
