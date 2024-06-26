@@ -10,7 +10,6 @@ public class CSI_Item : MonoBehaviour
     private bool can_get_item,can_change;
     private float speed = 1000;
     public bool itahamsu;
-
     
     private Vector3 startPos, endPos;
     //땅에 닫기까지 걸리는 시간
@@ -49,10 +48,11 @@ public class CSI_Item : MonoBehaviour
 
     private void Awake()
     {
-        Player_item = GameObject.Find("Item_");
+        Player_item = GameObject.Find("Item_");//플래이어 자식으로 있는 아이템
         Throw = false;
         can_change = false;
-        Player = GameObject.Find("Player_CSI");
+        Player = GameObject.Find("Player_CSI");//플래이어 이름을 넣어야합니다......[SerializeField]--사용 금지--(자동화 불가.)
+
     }
 
     private void Update()
