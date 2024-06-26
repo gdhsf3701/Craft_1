@@ -11,6 +11,8 @@ public class PlayerAnimator : MonoBehaviour
     private readonly int _jumpHash = Animator.StringToHash("Jump");
     private readonly int _runHash = Animator.StringToHash("Run");
     private readonly int _attackHash = Animator.StringToHash("Attack");
+    private readonly int _punchHash = Animator.StringToHash("PunchCombo");
+    private readonly int _KickHash = Animator.StringToHash("KickCombo");
 
     private void Awake()
     {
@@ -18,6 +20,7 @@ public class PlayerAnimator : MonoBehaviour
         _movement.isGround.OnValueChanged += HandleGroundChanged;
         Attack.Instance.attacking.OnValueChanged += HandleAttackChanged;
         _punchCompo.damageCompo.comboCount.OnValueChanged += PunchComboAni;
+        _KickCompo.damageCompo.comboCount.OnValueChanged += KickComboAni;
     }
 
     private void HandleGroundChanged(bool prev, bool next)
@@ -39,7 +42,11 @@ public class PlayerAnimator : MonoBehaviour
     }
     public void PunchComboAni(int prev, int next)
     {
-        _animator.SetInteger("PunchCombo", next);
+        _animator.SetInteger(_punchHash, next);
+    }
+    public void KickComboAni(int prev, int next)
+    {
+        _animator.SetInteger(_KickHash, next);
     }
     private void FixedUpdate()
     {
