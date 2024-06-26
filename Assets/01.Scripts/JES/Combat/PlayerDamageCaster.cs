@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageCaster : MonoBehaviour
+public class PlayerDamageCaster : MonoBehaviour
 {
     public LayerMask layerMask;
     [Header("Setting")]
@@ -10,6 +10,7 @@ public class DamageCaster : MonoBehaviour
     [SerializeField] private Vector2 boxSize;
     [SerializeField]
     private List<int> damageList = new List<int>();
+
     [SerializeField]
     private AgentMovement playerMovement;
 

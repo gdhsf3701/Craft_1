@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Agent : MonoBehaviour
+public abstract class Agent : MonoBehaviour
 {
     #region Component section
     public AgentMovement MovementCompo { get; protected set; }
@@ -23,6 +23,9 @@ public class Agent : MonoBehaviour
         HealthCompo = GetComponent<Health>();
         HealthCompo.Initalize(this);
     }
+
+    
+    public abstract void SetDeadState();
 
     #region Flip Character
     public bool IsFacingRight()
