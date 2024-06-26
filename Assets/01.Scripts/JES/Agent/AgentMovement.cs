@@ -97,15 +97,5 @@ public class AgentMovement : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
-        if (_groundCheckerTrm == null) return;
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(_groundCheckerTrm.position, _groundCheckerSize);
-        Gizmos.color = Color.white;
-    }
-
-#endif
 }
