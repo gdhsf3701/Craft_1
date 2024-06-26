@@ -5,11 +5,11 @@ using UnityEngine;
 public class Kick : MonoBehaviour
 {
     public Player _Player;
-    public DamageCaster damageCompo;
+    public PlayerDamageCaster damageCompo;
     private void Awake()
     {
         _Player = GetComponentInParent<Player>();   
-        damageCompo = GetComponent<DamageCaster>();
+        damageCompo = GetComponent<PlayerDamageCaster>();
         _Player.PlayerInput.OnKickKeyEvent += damageCompo.CastDamage;
     }
     private void OnDisable()
