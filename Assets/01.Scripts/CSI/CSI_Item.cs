@@ -9,7 +9,7 @@ public class CSI_Item : MonoBehaviour
     private GameObject Player_item,Player;
     private bool can_get_item,can_change;
     private float speed = 1000;
-    public bool itahamsu;
+    public bool itahamsu;//True면 포물선으로 던지기
     
     private Vector3 startPos, endPos;
     //땅에 닫기까지 걸리는 시간
@@ -40,11 +40,9 @@ public class CSI_Item : MonoBehaviour
 
 
     
-    /// <summary>
-    /// ////////////////////////////////////////////////////////////////////////////////hgf
-    /// </summary>
 
-    public bool Throw { get; set; }
+    public bool can_throw { get; set; }
+    public bool Throw{ get; set; }
 
     private void Awake()
     {
@@ -54,26 +52,35 @@ public class CSI_Item : MonoBehaviour
         Player = GameObject.Find("Player_CSI");//플래이어 이름을 넣어야합니다......[SerializeField]--사용 금지--(자동화 불가.)
 
     }
-
+    /// <summary>
+    /// ------------------이 아래는 중요 
+    /// </summary>
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F)&&can_get_item&& !Throw)
+        if (Input.GetKeyDown(KeyCode.F)&&can_get_item&& !Throw&&!can_throw)//F 를 눌렀고,아이템 주변에 플래이어가 있고,나 자신이 던지고 있는중이 아니면
         {
-            if (can_change)
+            print(transform.parent);
+            if (can_change&&transform.parent != null)//can_change가 켜져 있으면 손에 아이템이 있고 바꿀수 있다.
             {
+                print("!");//땅에 있는 스크
                 GameObject fire_item;
-                fire_item = Player_item.transform.GetChild(0).gameObject;
-                fire_item.transform.parent = null;
                 transform.position = Player_item.transform.position;
                 transform.parent = Player_item.transform;
+                fire_item = Player_item.transform.GetChild(0).gameObject;
+                fire_item.GetComponent<CSI_Item>().can_throw = false;
+                fire_item.transform.parent = null;// 아이템을 빼기
             }
             else if (Player_item.transform.childCount == 0)
             {
+                print("손에 들기");
                 transform.position = Player_item.transform.position;
                 transform.parent = Player_item.transform;
+                can_throw = true;
+
             }
-            else
+            else if(can_throw)
             {
+                print("던진다");//손에 있는 스크
                 GameObject fire_item;
                 fire_item = Player_item.transform.GetChild(0).gameObject;
                 fire_item.transform.parent = null;
@@ -107,20 +114,22 @@ public class CSI_Item : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// ------------------이 위는 중요 
+    /// </summary>
 
     private void Throwandthouch()
     {
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)//아이템 주위에 들어올때
     {
         if (!can_get_item && Throw &&!other.transform.CompareTag("Player"))
         {
             if (other.transform.CompareTag("Ground"))
             {
-                Throwandthouch();
+                Throwandthouch();//땅에 닿으면 지우기
             }
         }
         if (other.transform.CompareTag("Player"))
@@ -130,10 +139,11 @@ public class CSI_Item : MonoBehaviour
                 can_change = true;
             }
             can_get_item = true;
+
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)//아이템에서 나올때
     {
         if (other.transform.CompareTag("Player"))
         {
