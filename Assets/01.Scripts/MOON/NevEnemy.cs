@@ -4,24 +4,55 @@ using UnityEngine;
 
 public class NevEnemy : MonoBehaviour
 {
-    [SerializeField]GameObject target;
-    Camera cam;
-    Vector3 tar;
-    private Vector2 leftdownLimit;
-    private Vector2 rightupLimit;
-    float speed;
-    private void Awake()
+    public Transform target;
+     float lerpSpeed = 15f;
+     float edgeOffset = 0.05f;//5%
+
+    [SerializeField] GameObject pointer;
+    private Camera mainCamera;
+
+    void Start()
     {
-        cam = Camera.main;
-        leftdownLimit = cam.ViewportToWorldPoint(new Vector2(0, 1));
-        rightupLimit = cam.ViewportToWorldPoint(new Vector2(1, 0));
+        mainCamera = Camera.main;
     }
-    private void Update()
+
+    void Update()
     {
-        transform.position = (target.transform.position - transform.position).normalized * speed;
-    }
-    private void LateUpdate()
-    {
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftdownLimit.x, rightupLimit.x), Mathf.Clamp(transform.position.y, rightupLimit.y, leftdownLimit.y), 0);
+        if (target == null)
+        {
+            pointer.SetActive(false);
+            return;
+        }
+
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(target.position);
+
+        if (screenPos.z > 0 && screenPos.x > 0 && screenPos.x < Screen.width && screenPos.y > 0 && screenPos.y < Screen.height)
+        {
+            pointer.SetActive(false);
+        }
+        else
+        {
+            Vector3 clampedPosition = target.position;
+
+            Vector3 viewportPos = mainCamera.WorldToViewportPoint(target.position);
+            if (viewportPos.x < 0)
+                viewportPos.x = edgeOffset;
+            else if (viewportPos.x > 1)
+                viewportPos.x = 1 - edgeOffset;
+
+            if (viewportPos.y < 0)
+                viewportPos.y = edgeOffset;
+            else if (viewportPos.y > 1)
+                viewportPos.y = 1 - edgeOffset;
+
+            clampedPosition = mainCamera.ViewportToWorldPoint(viewportPos);
+
+            pointer.SetActive(true);
+            pointer.transform.position = Vector3.Lerp(pointer.transform.position, clampedPosition, Time.deltaTime * lerpSpeed);
+
+            Vector3 direction = target.position - pointer.transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            pointer.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
+        }
     }
 }
