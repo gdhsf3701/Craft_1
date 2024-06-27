@@ -42,12 +42,12 @@ public class CSI_Item : MonoBehaviour
     
 
     public bool can_throw { get; set; }
-    public bool Throw{ get; set; }
+    public bool Ihand{ get; set; }
 
     private void Awake()
     {
         Player_item = GameObject.Find("Item_");//플래이어 자식으로 있는 아이템
-        Throw = false;
+        Ihand = false;
         can_change = false;
         Player = GameObject.Find("Player_CSI");//플래이어 이름을 넣어야합니다......[SerializeField]--사용 금지--(자동화 불가.)
 
@@ -57,37 +57,42 @@ public class CSI_Item : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F)&&can_get_item&& !Throw&&!can_throw)//F 를 눌렀고,아이템 주변에 플래이어가 있고,나 자신이 던지고 있는중이 아니면
+        if (Input.GetKeyDown(KeyCode.F)&&can_get_item)//F 를 눌렀고,아이템 주변에 플래이어가 있고,나 자신이 던지고 있는중이 아니면
         {
-            print(transform.parent);
-            if (can_change&&transform.parent != null)//can_change가 켜져 있으면 손에 아이템이 있고 바꿀수 있다.
-            {
-                print("!");//땅에 있는 스크
+            if (can_change&&transform.parent == null)//can_change가 켜져 있으면 손에 아이템이 있고 바꿀수 있다.
+            { //땅에 있는 스크
                 GameObject fire_item;
+                
+                if (Player_item.transform.childCount != 0)
+                {
+                    fire_item = Player_item.transform.GetChild(0).gameObject;
+                    fire_item.GetComponent<CSI_Item>().can_throw = false;
+                    fire_item.GetComponent<CSI_Item>().Ihand = false;
+                    fire_item.transform.parent = null;// 아이템을 빼기
+                }
+
+                can_throw = true;
+                Ihand = true;
                 transform.position = Player_item.transform.position;
                 transform.parent = Player_item.transform;
-                fire_item = Player_item.transform.GetChild(0).gameObject;
-                fire_item.GetComponent<CSI_Item>().can_throw = false;
-                fire_item.transform.parent = null;// 아이템을 빼기
             }
             else if (Player_item.transform.childCount == 0)
             {
-                print("손에 들기");
                 transform.position = Player_item.transform.position;
                 transform.parent = Player_item.transform;
                 can_throw = true;
-
+                Ihand = true;
             }
-            else if(can_throw)
+            else if(can_throw&&Ihand)
             {
-                print("던진다");//손에 있는 스크
+                //손에 있는 스크
                 GameObject fire_item;
                 fire_item = Player_item.transform.GetChild(0).gameObject;
                 fire_item.transform.parent = null;
-                fire_item.GetComponent<CSI_Item>().Throw = true;
+                fire_item.GetComponent<CSI_Item>().Ihand = true;
                 if (!itahamsu)
                 {
-                    if (Player.transform.position.x>0)
+                    if (Player.transform.localScale.x>0)
                     {
                         fire_item.GetComponent<Rigidbody2D>().velocity += Vector2.right *Time.fixedDeltaTime * speed;
 
@@ -101,7 +106,7 @@ public class CSI_Item : MonoBehaviour
                 else
                 {
                     startPos = fire_item.transform.position;
-                    if (Player.transform.position.x>0)
+                    if (Player.transform.localScale.x>0)
                         endPos = startPos + new Vector3(10, 0, 0);
                     else
                     {
@@ -125,7 +130,7 @@ public class CSI_Item : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)//아이템 주위에 들어올때
     {
-        if (!can_get_item && Throw &&!other.transform.CompareTag("Player"))
+        if (!can_get_item && Ihand &&!other.transform.CompareTag("Player"))
         {
             if (other.transform.CompareTag("Ground"))
             {
@@ -136,8 +141,14 @@ public class CSI_Item : MonoBehaviour
         {
             if (Player_item.transform.childCount != 0)//손에 가지고 있다
             {
+                if (Player_item.transform.GetChild(0))
+                {
+                    Player_item.transform.GetChild(0).GetComponent<CSI_Item>().can_throw = false;
+                }
                 can_change = true;
             }
+
+            
             can_get_item = true;
 
         }
@@ -149,6 +160,10 @@ public class CSI_Item : MonoBehaviour
         {
             if (Player_item.transform.childCount != 0)//손에 가지고 있다
             {
+                if (Player_item.transform.GetChild(0))
+                {
+                    Player_item.transform.GetChild(0).GetComponent<CSI_Item>().can_throw = true;
+                }
                 can_change = false;
             }
             can_get_item = false;
