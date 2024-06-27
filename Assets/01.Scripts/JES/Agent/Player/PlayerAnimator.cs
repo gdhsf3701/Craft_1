@@ -17,12 +17,13 @@ public class PlayerAnimator : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+
         _movement.isGround.OnValueChanged += HandleGroundChanged;
         Attack.Instance.attacking.OnValueChanged += HandleAttackChanged;
+
         _punchCompo.damageCompo.comboCount.OnValueChanged += PunchComboAni;
         _KickCompo.damageCompo.comboCount.OnValueChanged += KickComboAni;
     }
-
     private void HandleGroundChanged(bool prev, bool next)
     {
         _animator.SetBool(_jumpHash, next);
@@ -53,7 +54,6 @@ public class PlayerAnimator : MonoBehaviour
         float absVelocity = Mathf.Abs(_movement.rbCompo.velocity.x);
         ChangeWalk(absVelocity);
     }
-
     private void ChangeWalk(float absVelocity)
     {
         _animator.SetBool(_idleHash, !(absVelocity > 0));
