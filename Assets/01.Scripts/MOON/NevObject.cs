@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NevEnemy : MonoBehaviour
+public class NevObject : MonoBehaviour
 {
     public Transform target;
      float lerpSpeed = 15f;
