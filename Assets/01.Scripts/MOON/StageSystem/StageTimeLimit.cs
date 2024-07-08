@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class StageTimeLimit : MonoBehaviour
 {
     [SerializeField]int timeLimit;
     int nowTime = 0;
     public bool nowCheck = false;
+
+    public bool done = false;
 
     public Action<int> OnNowTimeChanged;
     public int Time 
@@ -45,6 +48,10 @@ public class StageTimeLimit : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             NowTime += 1;
+        }
+        if (!done)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

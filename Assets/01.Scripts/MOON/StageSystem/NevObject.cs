@@ -35,13 +35,16 @@ public class NevObject : MonoBehaviour
             Vector3 clampedPosition = target.position;
 
             Vector3 viewportPos = mainCamera.WorldToViewportPoint(target.position);
+
             if (viewportPos.x < 0)
                 viewportPos.x = edgeOffset;
+
             else if (viewportPos.x > 1)
                 viewportPos.x = 1 - edgeOffset;
 
             if (viewportPos.y < 0)
                 viewportPos.y = edgeOffset;
+
             else if (viewportPos.y > 1)
                 viewportPos.y = 1 - edgeOffset;
 
