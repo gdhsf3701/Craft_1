@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDamageCaster : MonoBehaviour
+public class DamageCaster : MonoBehaviour
 {
     public ContactFilter2D filter;
     public float damageRadius;

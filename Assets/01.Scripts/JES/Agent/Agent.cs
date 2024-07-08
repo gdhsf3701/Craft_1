@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,12 @@ public abstract class Agent : MonoBehaviour
     public bool IsDead { get; protected set; }
 
     protected float _timeInAir;
+    
+    public event Action OnFlipEvent;
+
+    public bool CanStateChangeable { get; protected set; } = true;
+    
+    [HideInInspector] public float lastAttackTime;
 
     protected virtual void Awake()
     {
@@ -35,13 +42,16 @@ public abstract class Agent : MonoBehaviour
 
     public void HandleSpriteFlip(Vector3 targetPosition)
     {
-        if (targetPosition.x < transform.position.x)
+        bool isRight = IsFacingRight();
+        if (targetPosition.x < transform.position.x && isRight)
         {
-            transform.localScale = new Vector3(-1,1,1);
+            transform.eulerAngles = new Vector3(0, -180f, 0);
+            OnFlipEvent?.Invoke();
         }
-        else if (targetPosition.x > transform.position.x)
+        else if (targetPosition.x > transform.position.x && !isRight)
         {
-            transform.localScale = new Vector3(1,1,1);
+            transform.eulerAngles = Vector3.zero;
+            OnFlipEvent?.Invoke();
         }
     }
     #endregion

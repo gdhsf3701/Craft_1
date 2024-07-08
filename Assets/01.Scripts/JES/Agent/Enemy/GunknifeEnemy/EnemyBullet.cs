@@ -10,7 +10,7 @@ public class EnemyBullet : MonoBehaviour, Ipoolable
     public GameObject ObjectPrefab => gameObject;
 
 
-    private EnemyDamageCaster _damageCaster;
+    private DamageCaster _damageCaster;
     private Rigidbody2D _rigidBody;
 
     private int _damage;
@@ -21,7 +21,7 @@ public class EnemyBullet : MonoBehaviour, Ipoolable
     private float _timer = 0;
     private void Awake()
     {
-        _damageCaster = transform.Find("DamageCaster").GetComponent<EnemyDamageCaster>();
+        _damageCaster = transform.Find("DamageCaster").GetComponent<DamageCaster>();
         _rigidBody = GetComponent<Rigidbody2D>();
     }
 
