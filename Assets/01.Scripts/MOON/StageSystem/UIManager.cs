@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
 
-public class TextManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     private StageTimeLimit time;
     [SerializeField] private TMP_Text timeText;
@@ -13,7 +13,7 @@ public class TextManager : MonoBehaviour
     private void Start()
     {
         time= FindObjectOfType<StageTimeLimit>();
-        timeText.text = $"Remaining Time:{time.Time}(second)";
+        timeText.text = $"남은시간:{time.Time}";
         if (time != null)
         {
             time.OnNowTimeChanged += HandleNowTimeChanged;
@@ -22,7 +22,7 @@ public class TextManager : MonoBehaviour
 
     private void HandleNowTimeChanged(int newTime)
     {
-        timeText.text = $"Remaining Time:{time.Time - newTime}(second)";
+        timeText.text = $"남은시간:{time.Time - newTime}";
     }
     
     private void OnDestroy()
