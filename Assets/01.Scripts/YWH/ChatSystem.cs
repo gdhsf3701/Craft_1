@@ -9,15 +9,26 @@ public class ChatSystem : MonoSingleton<ChatSystem>
     [SerializeField] private TextMeshProUGUI chatName;
     [SerializeField] private TextMeshProUGUI desc;
 
+    [SerializeField] private CanvasGroup canvasGroup;
+
+    public bool endText;
 
 
    public void TypCoStart(string name, string text, float rate)
     {
+        endText = false;
         StartCoroutine(Typing(text, rate));
         chatName.text = name;
         chatName.DOFade(1, 1);
         desc.DOFade(1, 1);
     }
+
+    public void StopTyp()
+    {
+        chatName.DOFade(0, 1);
+        desc.DOFade(0, 1);
+    }
+
 
     private IEnumerator Typing(string text, float rate)
     {
@@ -28,7 +39,7 @@ public class ChatSystem : MonoSingleton<ChatSystem>
             yield return new WaitForSecondsRealtime(rate);
         }
         yield return new WaitForSeconds(1.5f);
-        chatName.DOFade(0, 1);
-        desc.DOFade(0, 1);
+       
+        endText = true;
     }
 }
