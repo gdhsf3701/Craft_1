@@ -10,14 +10,16 @@ public class Ditch : MonoBehaviour
     float gameOverTime = 0;
     public bool GameOver { get; private set; }
     GameObject Player;
-    Rigidbody2D rd;
+    AgentMovement agentMovement;
+    float saveSpeed = 0;
+    float saveJump = 0;
 
     bool CoolTime=false;
 
     private void Start()
     {
         Player = GameObject.Find("Player");
-        rd = Player.GetComponent<Rigidbody2D>();
+        agentMovement = Player.GetComponent<AgentMovement>();
         GameOver = false;
     }
 
@@ -41,9 +43,10 @@ public class Ditch : MonoBehaviour
 
     private void SetRigidbodyToDynamic()
     {
-        if (rd.bodyType != RigidbodyType2D.Dynamic)
+        if (agentMovement.moveSpeed == 0)
         {
-            rd.bodyType = RigidbodyType2D.Dynamic;
+            agentMovement.moveSpeed = saveSpeed;
+            agentMovement.jumpPower = saveJump;
         }
     }
     IEnumerator InDitch()
@@ -71,7 +74,10 @@ public class Ditch : MonoBehaviour
             isIn = true;
             ditchOut = 20;
             gameOverTime = 5;
-            rd.bodyType = RigidbodyType2D.Static;
+            saveSpeed = agentMovement.moveSpeed;
+            saveJump = agentMovement.jumpPower;
+            agentMovement.moveSpeed = 0;
+            agentMovement.jumpPower = 0;
             StartCoroutine(InDitch());
         }
     }

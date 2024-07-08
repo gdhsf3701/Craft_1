@@ -13,7 +13,6 @@ public class Cover : MonoBehaviour
 
     GameObject _player;
 
-    Rigidbody2D rd;
     CinemachineVirtualCamera camera;
 
     SpriteRenderer renderer;
@@ -21,13 +20,18 @@ public class Cover : MonoBehaviour
     float maxCameraSize = 5f;
     float minCameraSize = 2.5f;
 
+    AgentMovement agentMovement;
+
     Coroutine coroutine;
+
+    float saveSpeed = 0;
+    float saveJump = 0;
 
     private void Start()
     {
         _player = GameObject.Find("Player");
+        agentMovement = _player.GetComponent<AgentMovement>();
         camera = FindAnyObjectByType<CinemachineVirtualCamera>();
-        rd = _player.GetComponent<Rigidbody2D>();
         renderer = _player.GetComponentInChildren<SpriteRenderer>();
         maxCameraSize -= 0.1f;
         minCameraSize += 0.1f;
@@ -52,7 +56,13 @@ public class Cover : MonoBehaviour
             {
                 _player.layer = 0;
                 renderer.color = Color.clear;
-                rd.bodyType = RigidbodyType2D.Static;
+
+                saveSpeed = agentMovement.moveSpeed;
+                saveJump = agentMovement.jumpPower;
+                agentMovement.moveSpeed = 0;
+                agentMovement.jumpPower = 0;
+
+
                 hide = true;
                 _player.transform.position = new Vector3(transform.position.x,_player.transform.position.y,_player.transform.position.z );
                 if (coroutine != null)
@@ -70,7 +80,8 @@ public class Cover : MonoBehaviour
                 _player.layer = 7;
                 renderer.color = Color.white;
                 hide = false;
-                rd.bodyType = RigidbodyType2D.Dynamic;
+                agentMovement.moveSpeed = saveSpeed;
+                agentMovement.jumpPower = saveJump;
                 if (coroutine != null)
                 {
                     StopCoroutine(coroutine);
