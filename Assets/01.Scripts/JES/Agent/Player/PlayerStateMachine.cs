@@ -4,11 +4,11 @@ using UnityEngine;
 
 public enum PlayerEnum
 {
-    Idle,
-    Run,
     Attack1,
     Attack2,
     Attack3,
+    Idle,
+    Run,
     Kick,
     Knife,
     Jump,

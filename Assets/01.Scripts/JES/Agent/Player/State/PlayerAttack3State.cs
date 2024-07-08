@@ -22,7 +22,7 @@ public class PlayerAttack3State : PlayerState
 
     public override void Exit()
     {
-        _player.lastAttackTime = Time.time;
+        _player.lastAttackTime = Time.time-1;
         base.Exit();
     }
 

@@ -16,7 +16,6 @@ public abstract class Enemy : Agent
 
     protected int _enemyLayer;
 
-    public DamageCaster DamageCasterCompo { get; protected set; }
 
     private Collider2D[] _colliders;
 
@@ -31,7 +30,6 @@ public abstract class Enemy : Agent
     protected override void Awake()
     {
         base.Awake();
-        DamageCasterCompo = transform.Find("DamageCaster").GetComponent<DamageCaster>();
         _enemyLayer = LayerMask.NameToLayer("Enemy");
         _colliders = new Collider2D[1];
     }

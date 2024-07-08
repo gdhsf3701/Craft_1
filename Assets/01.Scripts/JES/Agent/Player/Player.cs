@@ -1,16 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class Player : Agent
 {
     
     public PlayerStateMachine stateMachine;
 
+    [Header("Normal Attack")] 
+    [SerializeField] private int _damage;
+
+    [SerializeField] private float _knockPower;
+    
+    
     public List<PlayerDamageSO> damageDataList;
     public UnityEvent JumpEvent;
+    public PlayerDamageSO damageData;
     [field: SerializeField] public InputReader PlayerInput { get; private set; }
+    public float attackCoolDown;
 
+
+    public int comboCount= 0;
     protected override void Awake()
     {
         base.Awake();
@@ -27,14 +38,22 @@ public class Player : Agent
         stateMachine.Initialize(PlayerEnum.Idle, this);
 
         PlayerInput.OnJumpKeyEvent += HandleJumpKeyEvent;
-    }
-    
-   
 
+    }
     public void Attack()
     {
-        //공격 함수
-        //나중에 so로 계속 갈아끼우면서 할예정
+        damageData = damageDataList[comboCount];
+        
+        attackCoolDown = 0;
+        
+        DamageCasterCompo.transform.localPosition = damageData.damagePos;
+        DamageCasterCompo.damageRadius = damageData.damageRadius;
+
+        _damage = damageData.damage;
+        _knockPower = damageData.knockPower;
+        DamageCasterCompo.CastDamage(_damage, _knockPower);
+        
+        comboCount++;
     }
 
     private void OnDestroy()
@@ -49,7 +68,7 @@ public class Player : Agent
     }
     private void Update()
     {
-        
+        stateMachine.CurrentState.UpdateState();
         
         float x = PlayerInput.Movement.x;
         SpriteFlip(x);
