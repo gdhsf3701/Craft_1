@@ -11,31 +11,28 @@ public abstract class PlayerDefaultState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        _player.MovementCompo.isGround.OnValueChanged += HandleGroundChange;
-        HandleGroundChange(false,_player.MovementCompo.isGround.Value);
-        _player.PlayerInput.OnPunchKeyEvent += HandleAttackEvent;
-    }
-
-    private void HandleAttackEvent()
-    {
-        if (_player.lastAttackTime + _player.attackCoolDown < Time.time)
-        {
-            _stateMachine.ChangeState((PlayerEnum)_player.comboCount);
-        }
+        
+        _player.HealthCompo.OnHitEvent.AddListener(HandleHitEvent);
+        _player.PlayerInput.OnJumpKeyEvent += HandleJumpKeyEvent;
     }
     
-
-    private void HandleGroundChange(bool prev, bool next)
+    private void HandleHitEvent()
     {
-        if(next == false)
-        {
-            _stateMachine.ChangeState(PlayerEnum.Jump);
-        }
+        _stateMachine.ChangeState(PlayerEnum.Hit);
+    }
+    private void HandleJumpKeyEvent()
+    {
+        if (_player.MovementCompo.isGround.Value)
+            _player.JumpProcess();
     }
 
     public override void UpdateState()
     {
         base.UpdateState();
+        
+        float x = _player.PlayerInput.Movement.x;
+        _player.SpriteFlip(x);
+        _player.MovementCompo.SetMoveMent(x);
         
         if(_player.comboCount<=0) return;
         
@@ -49,8 +46,8 @@ public abstract class PlayerDefaultState : PlayerState
 
     public override void Exit()
     {
-        _player.PlayerInput.OnPunchKeyEvent -= HandleAttackEvent;
-        _player.MovementCompo.isGround.OnValueChanged -= HandleGroundChange;
+        _player.PlayerInput.OnJumpKeyEvent -= HandleJumpKeyEvent;
+        _player.HealthCompo.OnHitEvent.RemoveListener(HandleHitEvent);
         base.Exit();
     }
     

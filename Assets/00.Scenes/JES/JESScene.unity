@@ -198,6 +198,65 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62332005}
   m_CullTransparentMesh: 1
+--- !u!1 &220992857
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 220992858}
+  - component: {fileID: 220992860}
+  - component: {fileID: 220992859}
+  m_Layer: 7
+  m_Name: HitFeedback
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &220992858
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220992857}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -21.130001, y: -0.00999999, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1154988810}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &220992859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220992857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e1710f98a030534598cb4e07fb3d7b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetRenderer: {fileID: 1490275905}
+  _flashTime: 0.1
+--- !u!114 &220992860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220992857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93deb54d92af12045bb5b68519381394, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &286533054
 GameObject:
   m_ObjectHideFlags: 3
@@ -371,7 +430,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3106585680629980634, guid: 580fc0bc25e6df5428f7016b92ccaecd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.03
+      value: 1.34
       objectReference: {fileID: 0}
     - target: {fileID: 3106585680629980634, guid: 580fc0bc25e6df5428f7016b92ccaecd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -998,6 +1057,7 @@ Transform:
   - {fileID: 1490275904}
   - {fileID: 2049355176}
   - {fileID: 1540406712}
+  - {fileID: 220992858}
   - {fileID: 761115925}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1015,7 +1075,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnHitEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 220992860}
+        m_TargetAssemblyTypeName: FeedbackPlayer, Assembly-CSharp
+        m_MethodName: PlayFeedbacks
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls:
@@ -1051,7 +1123,7 @@ MonoBehaviour:
   detectRadius: 14
   attackRadius: 10
   attackCooldown: 0.7
-  KnockbackPower: 1
+  KnockbackPower: 90.2
   attackDamage: 10
   contactFilter:
     useTriggers: 0
@@ -1070,7 +1142,7 @@ MonoBehaviour:
   targerTrm: {fileID: 0}
   muzzleTrm: {fileID: 1540406712}
   bulletDamage: 10
-  bulletKnockBack: 0
+  bulletKnockBack: 78.06
   _poolName: GunKnifeEnemy
 --- !u!114 &1154988813
 MonoBehaviour:
@@ -1085,7 +1157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _groundCheckerTrm: {fileID: 2049355176}
-  moveSpeed: 5
+  moveSpeed: 3
   jumpPower: 7
   extraGravity: 30
   gravityDelay: 0.15
@@ -1241,7 +1313,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: eb5eb901460b0f94d89375c231687487, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

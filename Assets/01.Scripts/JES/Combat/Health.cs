@@ -28,7 +28,6 @@ public class Health : MonoBehaviour
     {
         _currentHealth -= amount;
         OnHitEvent?.Invoke();
-        //normal�� point, �˹� ���� ���Ŀ� ���⼭ ����մϴ�.
 
         if(knockbackPower > 0)
             _owner.MovementCompo.GetKnockback(normal * -1, knockbackPower);

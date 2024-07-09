@@ -34,10 +34,10 @@ public class Player : Agent
         stateMachine.AddState(PlayerEnum.Attack1,new PlayerAttack1State(this,stateMachine,"Attack1"));
         stateMachine.AddState(PlayerEnum.Attack2,new PlayerAttack2State(this,stateMachine,"Attack2"));
         stateMachine.AddState(PlayerEnum.Attack3,new PlayerAttack3State(this,stateMachine,"Attack3"));
+        stateMachine.AddState(PlayerEnum.Hit,new PlayerHitState(this,stateMachine,"Hit"));
         
         stateMachine.Initialize(PlayerEnum.Idle, this);
 
-        PlayerInput.OnJumpKeyEvent += HandleJumpKeyEvent;
 
     }
     public void Attack()
@@ -55,27 +55,18 @@ public class Player : Agent
         
         comboCount++;
     }
-
-    private void OnDestroy()
-    {
-        PlayerInput.OnJumpKeyEvent -= HandleJumpKeyEvent;
-    }
-
-    private void HandleJumpKeyEvent()
-    {
-        if (MovementCompo.isGround.Value)
-            JumpProcess();
-    }
+    
     private void Update()
     {
         stateMachine.CurrentState.UpdateState();
-        
-        float x = PlayerInput.Movement.x;
-        SpriteFlip(x);
-        MovementCompo.SetMoveMent(x);
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            HealthCompo.TakeDamage(10,Vector2.zero, Vector2.zero, 1);
+        }
     }
 
-    private void SpriteFlip(float x)
+    public void SpriteFlip(float x)
     {
         bool isRight = IsFacingRight();
         if (x < 0 && isRight)
@@ -88,7 +79,7 @@ public class Player : Agent
         }
     }
     
-    private void JumpProcess()
+    public void JumpProcess()
     {
         JumpEvent?.Invoke();
         MovementCompo.Jump();

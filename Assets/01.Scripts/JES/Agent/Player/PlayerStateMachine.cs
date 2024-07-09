@@ -13,7 +13,8 @@ public enum PlayerEnum
     Knife,
     Jump,
     Fall,
-    Dead
+    Dead,
+    Hit
 }
 public class PlayerStateMachine
 {
