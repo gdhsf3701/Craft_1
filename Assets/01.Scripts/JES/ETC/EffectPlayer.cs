@@ -17,7 +17,7 @@ public class EffectPlayer : MonoBehaviour, Ipoolable
     private void Awake()
     {
         _particle = GetComponent<ParticleSystem>();
-        _duration = _particle.main.duration; //��ƼŬ �ý����� ���θ�⿡�� 
+        _duration = _particle.main.duration;
         _particleDuration = new WaitForSeconds(_duration); 
     }
 
@@ -37,6 +37,6 @@ public class EffectPlayer : MonoBehaviour, Ipoolable
     public void ResetItem()
     {
         _particle.Stop();
-        _particle.Simulate(0); //��ƼŬ �����ġ�� ó������ �ǵ���.
+        _particle.Simulate(0); 
     }
 }
