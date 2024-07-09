@@ -1,70 +1,97 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class Player : Agent
 {
+    
+    public PlayerStateMachine stateMachine;
+
+    [Header("Normal Attack")] 
+    [SerializeField] private int _damage;
+
+    [SerializeField] private float _knockPower;
+    
+    
+    public List<PlayerDamageSO> damageDataList;
     public UnityEvent JumpEvent;
+    public PlayerDamageSO damageData;
     [field: SerializeField] public InputReader PlayerInput { get; private set; }
+    public float attackCoolDown;
 
-    private bool _canDoubleJump;
 
+    public int comboCount= 0;
     protected override void Awake()
     {
         base.Awake();
+        stateMachine = new PlayerStateMachine(); 
+        
+        stateMachine.AddState(PlayerEnum.Idle,new PlayerIdleState(this,stateMachine,"Idle"));
+        stateMachine.AddState(PlayerEnum.Run,new PlayerRunState(this,stateMachine,"Run"));
+        stateMachine.AddState(PlayerEnum.Jump,new PlayerJumpState(this,stateMachine,"Jump"));
+        stateMachine.AddState(PlayerEnum.Fall,new PlayerFallState(this,stateMachine,"Fall"));
+        stateMachine.AddState(PlayerEnum.Attack1,new PlayerAttack1State(this,stateMachine,"Attack1"));
+        stateMachine.AddState(PlayerEnum.Attack2,new PlayerAttack2State(this,stateMachine,"Attack2"));
+        stateMachine.AddState(PlayerEnum.Attack3,new PlayerAttack3State(this,stateMachine,"Attack3"));
+        stateMachine.AddState(PlayerEnum.Hit,new PlayerHitState(this,stateMachine,"Hit"));
+        
+        stateMachine.Initialize(PlayerEnum.Idle, this);
 
-        PlayerInput.OnJumpKeyEvent += HandleJumpKeyEvent;
+
     }
-
-
-    private void OnDestroy()
+    public void Attack()
     {
-        PlayerInput.OnJumpKeyEvent -= HandleJumpKeyEvent;
-    }
+        damageData = damageDataList[comboCount];
+        
+        attackCoolDown = 0;
+        
+        DamageCasterCompo.transform.localPosition = damageData.damagePos;
+        DamageCasterCompo.damageRadius = damageData.damageRadius;
 
-    private void HandleJumpKeyEvent()
-    {
-        if (MovementCompo.isGround.Value)
-        {
-            _canDoubleJump = true;
-            JumpProcess();
-        }
-        else if (_canDoubleJump)
-        {
-            _canDoubleJump = false;
-            JumpProcess();
-        }
+        _damage = damageData.damage;
+        _knockPower = damageData.knockPower;
+        DamageCasterCompo.CastDamage(_damage, _knockPower);
+        
+        comboCount++;
     }
+    
     private void Update()
     {
-        if (!Attack.Instance.attacking.Value)
-            MovementCompo.SetMoveMent(PlayerInput.Movement.x);
-        SpriteFlip(PlayerInput.Movement);
-    }
+        stateMachine.CurrentState.UpdateState();
 
-    private void SpriteFlip(Vector2 movement)
-    {
-        if (movement.x < 0)
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            int x = -1;
-            transform.localScale = new Vector3(x, 1, 1);
-        }
-        else if (movement.x > 0)
-        {
-            int x = 1;
-            transform.localScale = new Vector3(x, 1, 1);
+            HealthCompo.TakeDamage(10,Vector2.zero, Vector2.zero, 1);
         }
     }
 
-    private void JumpProcess()
+    public void SpriteFlip(float x)
     {
-        if (!Attack.Instance.attacking.Value)
+        bool isRight = IsFacingRight();
+        if (x < 0 && isRight)
         {
-            JumpEvent?.Invoke();
-            MovementCompo.Jump();
+            transform.eulerAngles = new Vector3(0, -180f, 0);
         }
+        else if (x> 0 && !isRight)
+        {
+            transform.eulerAngles = Vector3.zero;
+        }
+    }
+    
+    public void JumpProcess()
+    {
+        JumpEvent?.Invoke();
+        MovementCompo.Jump();
     }
 
     public override void SetDeadState()
     {
+        stateMachine.ChangeState(PlayerEnum.Dead);
+    }
+    
+    public void AnimationEndTrigger()
+    {
+        stateMachine.CurrentState.AnimationEndTrigger();
     }
 }
