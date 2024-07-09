@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class Stage1 : MonoBehaviour
 {
 
-
+    [SerializeField] private CanvasGroup keyUI;
 
     void Start()
     {
@@ -28,5 +29,9 @@ public class Stage1 : MonoBehaviour
         yield return new WaitUntil(() => ChatSystem.Instance.endText == true);
         yield return new WaitForSeconds(0.5f);
         ChatSystem.Instance.StopTyp();
+        yield return new WaitForSeconds(3);
+        keyUI.gameObject.SetActive(true);
+        keyUI.DOFade(1, 1);
+       
     }
 }

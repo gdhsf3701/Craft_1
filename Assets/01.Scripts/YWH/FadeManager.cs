@@ -8,7 +8,7 @@ using DG.Tweening;
 public class FadeManager : MonoBehaviour
 {
     public static FadeManager instance = null;
-    private RawImage fade;
+    [SerializeField] private RawImage fade;
 
 
     private void Awake()
@@ -38,6 +38,8 @@ public class FadeManager : MonoBehaviour
     {
         fade.DOFade(0, time);
     }
+
+   
 
 
 }
