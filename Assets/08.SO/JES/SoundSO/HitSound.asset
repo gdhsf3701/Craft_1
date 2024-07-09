@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcbf29d706103404e985e966fd40482b, type: 3}
-  m_Name: Enemybullet
+  m_Script: {fileID: 11500000, guid: 77c833ce10a2a2c4783ef4c60e688377, type: 3}
+  m_Name: HitSound
   m_EditorClassIdentifier: 
-  poolName: Enemybullet
-  prefab: {fileID: 7774984287089039716, guid: ee4179f83ac16334cabcce83ba69b7b7, type: 3}
-  count: 5
+  audioType: 0
+  clip: {fileID: 8300000, guid: 453bd379221103d48ba1de6889b4fa37, type: 3}
+  loop: 0
+  randomizePitch: 1
+  randomPicthModifier: 0.04
+  volume: 1
+  basePitch: 1
