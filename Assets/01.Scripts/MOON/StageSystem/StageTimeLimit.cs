@@ -47,11 +47,11 @@ public class StageTimeLimit : MonoBehaviour
         while (nowTime <= timeLimit&& nowCheck)
         {
             yield return new WaitForSeconds(1);
-            NowTime += 1;
+            if (!done)
+            {
+                NowTime += 1;
+            }
         }
-        if (!done)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

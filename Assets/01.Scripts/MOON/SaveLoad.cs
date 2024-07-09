@@ -52,7 +52,6 @@ public class SaveLoad : MonoBehaviour
                 nowTime++;
             }
         }
-
         PlayerPrefs.SetString($"SlotStage{SaveSlotNum}", SceneManager.GetActiveScene().name);
         PlayerPrefs.SetInt($"SlotTime{SaveSlotNum}", nowTime);
     }
