@@ -23,11 +23,10 @@ public class CSI_rendomSpwonItem : MonoBehaviour
     {
         while (true)
         {
-            int ranobj = Random.Range(1,GameObjects.Length);
+            int ranobj = Random.Range(0,GameObjects.Length);
             float ranx = Random.Range(GOPosition.x + Center.x - SIze.x/2,GOPosition.x + Center.x + SIze.x/2);
             float rany = Random.Range(GOPosition.y + Center.y- SIze.y/2,GOPosition.y + Center.y + SIze.y/2);
-            print($"{ranx} {rany}");
-
+            print(ranobj);
             Instantiate(GameObjects[ranobj]).transform.position = new Vector2(ranx, rany);
 
             yield return new WaitForSeconds(Timer);
