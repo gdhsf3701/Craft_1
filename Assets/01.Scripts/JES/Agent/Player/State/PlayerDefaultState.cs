@@ -36,11 +36,13 @@ public abstract class PlayerDefaultState : PlayerState
         
         if(_player.comboCount<=0) return;
         
-        if (_player.lastAttackTime + 0.4 < Time.time)
+        if (_player.lastAttackTime + 0.7 < Time.time)
         {
             _player.comboCount = 0;
             _player.attackCoolDown = _player.damageData.attackCooldown;
             _player.lastAttackTime = Time.time;
+            SkillCoolUI.Instance.NormalAttackCoolStart(_player.attackCoolDown);
+            SkillCoolUI.Instance.ComboImageSetUp();
         }
     }
 
