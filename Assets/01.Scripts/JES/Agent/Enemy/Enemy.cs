@@ -13,12 +13,9 @@ public abstract class Enemy : Agent
     public ContactFilter2D contactFilter;
 
     [HideInInspector] public Transform targerTrm = null;
-    [HideInInspector] public float lastAttackTime;
 
     protected int _enemyLayer;
-    public bool CanStateChangeable { get; protected set; } = true;
 
-    public EnemyDamageCaster DamageCasterCompo { get; protected set; }
 
     private Collider2D[] _colliders;
 
@@ -33,7 +30,6 @@ public abstract class Enemy : Agent
     protected override void Awake()
     {
         base.Awake();
-        DamageCasterCompo = transform.Find("DamageCaster").GetComponent<EnemyDamageCaster>();
         _enemyLayer = LayerMask.NameToLayer("Enemy");
         _colliders = new Collider2D[1];
     }

@@ -28,9 +28,18 @@ public class Health : MonoBehaviour
     {
         _currentHealth -= amount;
         OnHitEvent?.Invoke();
-        if (_currentHealth <= 0)
+
+        if(knockbackPower > 0)
+            _owner.MovementCompo.GetKnockback(normal * -1, knockbackPower);
+
+        if(_currentHealth <= 0)
         {
             OnDeadEvent?.Invoke();
         }
+    }
+
+    public float GetNormalizeHealth()
+    {
+        return _currentHealth / (float)_maxHealth;
     }
 }

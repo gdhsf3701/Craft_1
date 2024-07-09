@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class AgentMovement : MonoBehaviour
@@ -10,6 +11,7 @@ public class AgentMovement : MonoBehaviour
     public float jumpPower = 7f;
     public float extraGravity = 30f;
     public float gravityDelay = 0.15f;
+    public float knockbackTime = 0.2f;
 
     [SerializeField] private LayerMask _whatIsGround;
     [SerializeField] private Vector2 _groundCheckerSize;
@@ -18,6 +20,9 @@ public class AgentMovement : MonoBehaviour
     public Rigidbody2D rbCompo { get; private set; }
     public float _xMove;
     private float _timeInAir;
+    
+    protected bool _canMove = true;
+    protected Coroutine _kbCoroutine;
 
 
     private Agent _owner;
@@ -69,16 +74,19 @@ public class AgentMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        isGround.Value = CheckGrounded();
-        rbCompo.velocity = new Vector2(_xMove * moveSpeed, rbCompo.velocity.y);
+        CheckGrounded();
+        ApplyXMovement();
         ApllyExtraGravity();
     }
-
-    public bool CheckGrounded()
+    public void CheckGrounded()
     {
         Collider2D collider = Physics2D.OverlapBox(_groundCheckerTrm.position, _groundCheckerSize, 0, _whatIsGround);
-
-        return collider;
+        isGround.Value = collider != null;
+    }
+    private void ApplyXMovement()
+    {
+        if (!_canMove) return;
+        rbCompo.velocity = new Vector2(_xMove * moveSpeed, rbCompo.velocity.y);
     }
 
     private void ApllyExtraGravity()
@@ -88,6 +96,33 @@ public class AgentMovement : MonoBehaviour
             rbCompo.AddForce(new Vector2(0, -extraGravity));
         }
     }
+    
+    #region Knockback regeion
+    public void GetKnockback(Vector3 direction, float power)
+    {
+        Vector3 difference = direction * power * rbCompo.mass;
+        rbCompo.AddForce(difference, ForceMode2D.Impulse);
+
+        if(_kbCoroutine != null)
+            StopCoroutine(_kbCoroutine);
+
+        _kbCoroutine = StartCoroutine(KnockbackCoroutine());
+    }
+
+    private IEnumerator KnockbackCoroutine()
+    {
+        _canMove = false;
+        yield return new WaitForSeconds(knockbackTime);
+        rbCompo.velocity = Vector2.zero;
+        _canMove = true;
+    }
+
+    public void ClearKnockback()
+    {
+        rbCompo.velocity = Vector2.zero;
+        _canMove = true;
+    }
+    #endregion
 
 
 }
