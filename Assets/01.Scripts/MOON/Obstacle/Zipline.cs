@@ -35,8 +35,8 @@ public class Zipline : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F)&&!isMove)
             {
-                //_player.stateMachine.ChangeState(PlayerEnum.Wire);
                 isMove = true;
+                _player.stateMachine.ChangeState(PlayerEnum.Wire);
             }
         }
         if (isMove)
