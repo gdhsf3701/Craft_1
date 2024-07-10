@@ -9,7 +9,7 @@ public class InputReader : ScriptableObject, IPlayerActions
 {
     public Vector2 Movement { get; private set; }
 
-    private Controls _controls;
+    public Controls _controls;
 
     public event Action OnPunchKeyEvent;
     public event Action OnKickKeyEvent;
