@@ -11,7 +11,7 @@ public class Cover : MonoBehaviour
     // text는 상호작용 안 텍스트 (월드스페이스 캔버스)
     private bool _isPlayer = false;
 
-    GameObject _player;
+    Player _player;
 
     CinemachineVirtualCamera camera;
 
@@ -20,7 +20,6 @@ public class Cover : MonoBehaviour
     float maxCameraSize = 5f;
     float minCameraSize = 2.5f;
 
-    AgentMovement agentMovement;
 
     Coroutine coroutine;
 
@@ -29,8 +28,6 @@ public class Cover : MonoBehaviour
 
     private void Start()
     {
-        _player = GameObject.Find("Player");
-        agentMovement = _player.GetComponent<AgentMovement>();
         camera = FindAnyObjectByType<CinemachineVirtualCamera>();
         renderer = _player.GetComponentInChildren<SpriteRenderer>();
         maxCameraSize -= 0.1f;
@@ -54,13 +51,13 @@ public class Cover : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                _player.layer = 0;
+                //플레이어가 에너미에게 안보이는 코드
                 renderer.color = Color.clear;
 
-                saveSpeed = agentMovement.moveSpeed;
-                saveJump = agentMovement.jumpPower;
-                agentMovement.moveSpeed = 0;
-                agentMovement.jumpPower = 0;
+                saveSpeed = _player.MovementCompo.moveSpeed;
+                saveJump = _player.MovementCompo.jumpPower;
+                _player.MovementCompo.moveSpeed = 0;
+                _player.MovementCompo.jumpPower = 0;
 
 
                 hide = true;
@@ -77,12 +74,12 @@ public class Cover : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                _player.layer = 7;
+                //플레이어가 에너미에게 보이는 코드
                 renderer.color = Color.white;
                 renderer.enabled = true;
                 hide = false;
-                agentMovement.moveSpeed = saveSpeed;
-                agentMovement.jumpPower = saveJump;
+                _player.MovementCompo.moveSpeed = saveSpeed;
+                _player.MovementCompo.jumpPower = saveJump;
                 if (coroutine != null)
                 {
                     StopCoroutine(coroutine);

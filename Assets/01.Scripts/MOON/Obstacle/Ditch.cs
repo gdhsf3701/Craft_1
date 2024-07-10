@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Ditch : MonoBehaviour
 {
@@ -9,8 +10,7 @@ public class Ditch : MonoBehaviour
     bool isIn = false;
     float gameOverTime = 0;
     public bool GameOver { get; private set; }
-    GameObject Player;
-    AgentMovement agentMovement;
+    Player _player;
     float saveSpeed = 0;
     float saveJump = 0;
 
@@ -18,8 +18,6 @@ public class Ditch : MonoBehaviour
 
     private void Start()
     {
-        Player = GameObject.Find("Player");
-        agentMovement = Player.GetComponent<AgentMovement>();
         GameOver = false;
     }
 
@@ -43,10 +41,10 @@ public class Ditch : MonoBehaviour
 
     private void SetRigidbodyToDynamic()
     {
-        if (agentMovement.moveSpeed == 0)
+        if (_player.MovementCompo.moveSpeed == 0)
         {
-            agentMovement.moveSpeed = saveSpeed;
-            agentMovement.jumpPower = saveJump;
+            saveSpeed = _player.MovementCompo.moveSpeed;
+            saveJump = _player.MovementCompo.jumpPower;
         }
     }
     IEnumerator InDitch()
@@ -69,15 +67,16 @@ public class Ditch : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == Player&&!CoolTime)
+        if (!CoolTime)
         {
+            _player = collision.GetComponent<Player>();
             isIn = true;
             ditchOut = 20;
             gameOverTime = 5;
-            saveSpeed = agentMovement.moveSpeed;
-            saveJump = agentMovement.jumpPower;
-            agentMovement.moveSpeed = 0;
-            agentMovement.jumpPower = 0;
+            saveSpeed = _player.MovementCompo.moveSpeed;
+            saveJump = _player.MovementCompo.jumpPower;
+            _player.MovementCompo.moveSpeed = 0;
+            _player.MovementCompo.jumpPower = 0;
             StartCoroutine(InDitch());
         }
     }
