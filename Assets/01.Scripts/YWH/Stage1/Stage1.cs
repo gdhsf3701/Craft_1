@@ -6,6 +6,7 @@ public class Stage1 : MonoBehaviour
 {
 
     [SerializeField] private CanvasGroup keyUI;
+    
 
     void Start()
     {
@@ -31,7 +32,10 @@ public class Stage1 : MonoBehaviour
         ChatSystem.Instance.StopTyp();
         yield return new WaitForSeconds(3);
         keyUI.gameObject.SetActive(true);
+     
         keyUI.DOFade(1, 1);
-       
+        yield return new WaitUntil(() => PlayerManager.Instance.Player.PlayerInput.Movement.magnitude>0);
+
+        keyUI.DOFade(0, 1).SetDelay(0.5f);
     }
 }
