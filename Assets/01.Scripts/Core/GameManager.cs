@@ -1,6 +1,7 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoSingleton<GameManager>
 {
@@ -24,8 +25,6 @@ public class GameManager : MonoSingleton<GameManager>
     
     private void SavingData()
     {
-        Debug.Log(SaveManager.Instance.saveData);
-        Debug.Log(SaveManager.Instance.saveData.playTime);
         SaveManager.Instance.saveData.playTime = _playTime;
         SaveManager.Instance.saveData.playDate = DateTime.Now.ToString("yyyy - MM - dd - HH");
         SaveManager.Instance.saveData.playerHp = PlayerManager.Instance.Player.HealthCompo.CurrentHealth;
