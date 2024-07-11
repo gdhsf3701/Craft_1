@@ -13,8 +13,7 @@ public class HpbarUi : MonoBehaviour
 
     private Stack<Image> onCandleList = new Stack<Image>();
     private Stack<Image> offCandleList = new Stack<Image>();
-
-
+    
     private void Awake()
     {
         foreach (Image image in GetComponentsInChildren<Image>())
@@ -22,7 +21,15 @@ public class HpbarUi : MonoBehaviour
             onCandleList.Push(image);
         }
     }
- 
+
+    private void Start()
+    {
+        for (int i = 4; i > SaveManager.Instance.saveData.playerHp; i--)
+        {
+            HitEvent();
+        } 
+    }
+
     public void HitEvent()
     {
         Image candle = onCandleList.Pop();

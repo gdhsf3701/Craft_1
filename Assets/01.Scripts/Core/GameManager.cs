@@ -1,18 +1,36 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    private Player _player;
-    public Player Player
+    private float _playTime;
+
+    private void Start()
     {
-        get
+        _playTime = SaveManager.Instance.saveData.playTime;
+        PlayerManager.Instance.PlayerTrm.position = SaveManager.Instance.saveData.spawnPos;
+    }
+
+    private void Update()
+    {
+        _playTime += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.B))
         {
-            if (_player == null)
-                _player = FindObjectOfType<Player>();
-            if (_player == null)
-                Debug.LogWarning("noPlayer");
-            return _player;
+            SavingData();
         }
     }
-    public Transform PlayerTrm => Player.transform;
+    
+    
+    private void SavingData()
+    {
+        Debug.Log(SaveManager.Instance.saveData);
+        Debug.Log(SaveManager.Instance.saveData.playTime);
+        SaveManager.Instance.saveData.playTime = _playTime;
+        SaveManager.Instance.saveData.playDate = DateTime.Now.ToString("yyyy - MM - dd - HH");
+        SaveManager.Instance.saveData.playerHp = PlayerManager.Instance.Player.HealthCompo.CurrentHealth;
+        SaveManager.Instance.saveData.spawnPos = PlayerManager.Instance.PlayerTrm.position;
+        
+        SaveManager.Instance.SaveDataToJson();
+    }
 }

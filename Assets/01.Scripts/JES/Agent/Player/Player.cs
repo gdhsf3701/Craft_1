@@ -61,7 +61,7 @@ public class Player : Agent
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            HealthCompo.TakeDamage(10,Vector2.zero, Vector2.zero, 1);
+            HealthCompo.TakeDamage(1,Vector2.zero, Vector2.zero, 1);
         }
     }
 

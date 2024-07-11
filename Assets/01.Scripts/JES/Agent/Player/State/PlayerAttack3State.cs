@@ -18,5 +18,7 @@ public class PlayerAttack3State : PlayerAttackState
     {
         Time.timeScale = 1f;
         base.Exit();
+        SkillCoolUI.Instance.ComboImageSetUp();
+        _player.lastAttackTime -= 0.7f;
     }
 }
