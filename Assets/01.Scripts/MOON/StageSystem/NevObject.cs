@@ -5,7 +5,7 @@ using UnityEngine;
 public class NevObject : MonoBehaviour
 {
     public Transform target;
-     float lerpSpeed = 15f;
+     float lerpSpeed = 20f;
      float edgeOffset = 0.05f;//5%
 
     [SerializeField] GameObject pointer;

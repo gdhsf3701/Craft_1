@@ -1,16 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Ditch : MonoBehaviour
 {
     int ditchOut = 0;
     bool isIn = false;
     float gameOverTime = 0;
-    public bool GameOver { get; private set; }
     Player _player;
+    GameObject player;
     float saveSpeed = 0;
     float saveJump = 0;
 
@@ -18,7 +17,7 @@ public class Ditch : MonoBehaviour
 
     private void Start()
     {
-        GameOver = false;
+        player = GameObject.Find("Player");
     }
 
     private void Update()
@@ -30,10 +29,10 @@ public class Ditch : MonoBehaviour
                 --ditchOut;
                 if (ditchOut <= 0)
                 {
+                    StartCoroutine(Cool());
                     ditchOut = 0;
                     SetRigidbodyToDynamic();
                     isIn = false;
-                    StartCoroutine(Cool());
                 }
             }
         }
@@ -43,8 +42,8 @@ public class Ditch : MonoBehaviour
     {
         if (_player.MovementCompo.moveSpeed == 0)
         {
-            saveSpeed = _player.MovementCompo.moveSpeed;
-            saveJump = _player.MovementCompo.jumpPower;
+            _player.MovementCompo.moveSpeed = saveSpeed;
+            _player.MovementCompo.jumpPower = saveJump;
         }
     }
     IEnumerator InDitch()
@@ -59,7 +58,7 @@ public class Ditch : MonoBehaviour
             gameOverTime -= 0.1f;
             if (gameOverTime <= 0)
             {
-                GameOver = true;
+                //게임오버 스크립트
                 break;
             }
         }
@@ -67,7 +66,7 @@ public class Ditch : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!CoolTime)
+        if (!CoolTime&&collision.gameObject == player)
         {
             _player = collision.GetComponent<Player>();
             isIn = true;

@@ -9,7 +9,7 @@ public class StageTimeLimit : MonoBehaviour
 {
     [SerializeField]int timeLimit;
     int nowTime = 0;
-    public bool nowCheck = false;
+    public bool nowCheck = true;
 
     public bool done = false;
 
