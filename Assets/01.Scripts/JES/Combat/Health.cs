@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,16 +14,37 @@ public class Health : MonoBehaviour
 
     private int _currentHealth;
     private Agent _owner;
+    
+
+    public int CurrentHealth
+    {
+        get
+        {
+            return _currentHealth;
+        }
+    }
 
     public void Initalize(Agent owner)
     {
         _owner = owner;
+    }
+
+    private void Start()
+    {
         ResetHealth();
     }
 
     public void ResetHealth()
     {
-        _currentHealth = _maxHealth;
+        if (_owner.TryGetComponent<Player>(out Player player))
+        {
+            
+            _currentHealth = SaveManager.Instance.saveData.playerHp;
+        }
+        else
+        {
+            _currentHealth = _maxHealth;
+        }
     }
 
     public void TakeDamage(int amount, Vector2 normal, Vector2 point, float knockbackPower)
@@ -36,10 +59,5 @@ public class Health : MonoBehaviour
         {
             OnDeadEvent?.Invoke();
         }
-    }
-
-    public float GetNormalizeHealth()
-    {
-        return _currentHealth / (float)_maxHealth;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,38 +8,47 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class HpbarUi : MonoBehaviour
 {
-    private Health _playerHealth;
-    private Image _barImage;
-    private Image _backBarImage;
+    [SerializeField]
+    private Sprite onCandle, offCandle;
 
-    private float _lastHitTime;
-    private bool _isChaseFill;
+    private Stack<Image> onCandleList = new Stack<Image>();
+    private Stack<Image> offCandleList = new Stack<Image>();
+    
+    private void Awake()
+    {
+        foreach (Image image in GetComponentsInChildren<Image>())
+        {
+            onCandleList.Push(image);
+        }
+    }
+
     private void Start()
     {
-        _playerHealth = GameManager.Instance.Player.HealthCompo;
+        for (int i = 4; i > SaveManager.Instance.saveData.playerHp; i--)
+        {
+            HitEvent();
+        } 
+    }
 
-        _barImage = transform.Find("Bar").GetComponent<Image>();
-        _backBarImage = transform.Find("BackBar").GetComponent<Image>();
+    public void HitEvent()
+    {
+        Image candle = onCandleList.Pop();
+        candle.sprite = offCandle;
+        offCandleList.Push(candle);
+    }
 
-        _playerHealth.OnHitEvent.AddListener(HandleHitEvent);
-
+    public void HealingEvent()
+    {
+        Image candle = offCandleList.Pop();
+        candle.sprite = onCandle;
+        onCandleList.Push(candle);
     }
 
     private void Update()
     {
-        BackBarImage();
-    }
-    private void HandleHitEvent()
-    {
-        _lastHitTime = Time.time;
-        _barImage.fillAmount = _playerHealth.GetNormalizeHealth();
-        transform.DOShakePosition(0.3f, 1f, 100);
-    }
-
-    private void BackBarImage()
-    {
-        if (GameManager.Instance.Player == null) return;
-        if (!_isChaseFill && _lastHitTime + 1f > Time.time)
-            _backBarImage.DOFillAmount(_barImage.fillAmount, 0.8f).SetEase(Ease.InCubic).OnComplete(() => _isChaseFill = false);
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            HealingEvent();
+        }
     }
 }

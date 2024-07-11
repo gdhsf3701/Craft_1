@@ -23,6 +23,7 @@ public class PlayerAttackState : PlayerState
         base.Enter();
         _player.MovementCompo.StopImmediately(false);
         _player.HealthCompo.OnHitEvent.AddListener(HandleHitEvent);
+        SkillCoolUI.Instance.ComboImageSetUp();
     }
 
     private void HandleHitEvent()
@@ -32,6 +33,7 @@ public class PlayerAttackState : PlayerState
 
     public override void Exit()
     {
+        SkillCoolUI.Instance.ComboCooldown();
         _player.HealthCompo.OnHitEvent.RemoveListener(HandleHitEvent);
         _player.lastAttackTime = Time.time;
         base.Exit();
