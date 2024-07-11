@@ -5,14 +5,21 @@ using UnityEngine;
 
 public class PigBossPattern : MonoBehaviour
 {
-    Animator animator;
-    GameObject[] patternRange;
-    private void Awake()
+    GameObject patternRange;
+    bool coolTime;
+    private float attackTimer = 0f;
+    private float attackDelay = 2.8f;
+    private void Update()
     {
-        animator = GetComponent<Animator>();
-    }
-    private void Start()
-    {
+        attackTimer += Time.deltaTime;
+        if (attackTimer >= attackDelay)
+        {
+            attackTimer = 0f;
+        }
 
+    }
+    public void AttackColliderOnOff()
+    {
+        patternRange.SetActive(!patternRange.activeInHierarchy);
     }
 }
