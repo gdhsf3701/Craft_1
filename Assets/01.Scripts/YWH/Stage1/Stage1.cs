@@ -41,5 +41,7 @@ public class Stage1 : MonoBehaviour
         yield return new WaitUntil(() => PlayerManager.Instance.Player.PlayerInput.Movement.magnitude>0);
 
         keyUI.DOFade(0, 1).SetDelay(0.5f);
+
+
     }
 }

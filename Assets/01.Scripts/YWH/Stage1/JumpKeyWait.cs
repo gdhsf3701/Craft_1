@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class JumpKeyWait : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        ChatSystem.Instance.TypCoStart("금자월", "또.. 이런건가?", 0.2f);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -44,7 +44,7 @@ public class MasterMeet : MonoBehaviour
         if (playableDirector == aDirector)
         {
         PlayerManager.Instance.Player.PlayerInput._controls.Enable();
-        
+            StartCoroutine(Jump());
 
         }
            
