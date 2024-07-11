@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class StartButtons : MonoBehaviour
 {
+
+    [SerializeField] private GameObject ga;
+
     public void StartButtonClick()
     {
         StartCoroutine(Waitasec());
@@ -16,13 +19,27 @@ public class StartButtons : MonoBehaviour
     {
         FadeManager.instance.FadeIn(1);
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("YWH");
+      
         print("dd");
+    }
+
+    IEnumerator Waitasec2()
+    {
+        FadeManager.instance.FadeIn(1);
+        yield return new WaitForSeconds(2);
+        FadeManager.instance.FadeOut(1);
+        ga.SetActive(true);
+
     }
 
     public void LeaveButtonClick()
     {
         print("ss");
         Application.Quit();
-    }   
+    }
+    public void ContinueButtonClick()
+    {
+        Debug.Log("Á¤");
+        StartCoroutine(Waitasec2());
+    }
 }
