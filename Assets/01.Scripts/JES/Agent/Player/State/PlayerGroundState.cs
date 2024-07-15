@@ -21,7 +21,7 @@ public class PlayerGroundState : PlayerDefaultState
         base.Enter();
         _player.MovementCompo.isGround.OnValueChanged += HandleGroundChange;
         HandleGroundChange(false,_player.MovementCompo.isGround.Value);
-        _player.PlayerInput.OnPunchKeyEvent += HandleAttackEvent;
+        _player.PlayerInput.OnAttackKeyEvent += HandleAttackEvent;
     }
     private void HandleAttackEvent()
     {
@@ -32,7 +32,7 @@ public class PlayerGroundState : PlayerDefaultState
     }
     public override void Exit()
     {
-        _player.PlayerInput.OnPunchKeyEvent -= HandleAttackEvent;
+        _player.PlayerInput.OnAttackKeyEvent -= HandleAttackEvent;
         _player.MovementCompo.isGround.OnValueChanged -= HandleGroundChange;
         base.Exit();
     }

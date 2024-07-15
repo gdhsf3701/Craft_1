@@ -5,31 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    private float _playTime;
+    public float PlayTime { get; private set; }
 
     private void Start()
     {
-        _playTime = SaveManager.Instance.saveData.playTime;
-        PlayerManager.Instance.PlayerTrm.position = SaveManager.Instance.saveData.spawnPos;
+        PlayTime = SaveManager.Instance.saveData.playTime;
     }
 
     private void Update()
     {
-        _playTime += Time.deltaTime;
+        PlayTime += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.B))
         {
-            SavingData();
+            SaveManager.Instance.SavingData();
         }
-    }
-    
-    
-    private void SavingData()
-    {
-        SaveManager.Instance.saveData.playTime = _playTime;
-        SaveManager.Instance.saveData.playDate = DateTime.Now.ToString("yyyy - MM - dd - HH");
-        SaveManager.Instance.saveData.playerHp = PlayerManager.Instance.Player.HealthCompo.CurrentHealth;
-        SaveManager.Instance.saveData.spawnPos = PlayerManager.Instance.PlayerTrm.position;
-        
-        SaveManager.Instance.SaveDataToJson();
     }
 }
