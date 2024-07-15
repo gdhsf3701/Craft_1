@@ -1,37 +1,31 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class CSI_rendomSpwonItem : MonoBehaviour
 {
-    private BoxCollider2D _boxCollider;
-    private Vector2 Center;
-    private Vector2 SIze;
-    private Vector2 GOPosition;
     public GameObject[] GameObjects;
+    [SerializeField]private ItemSpawnSO[] data;
     private void Awake()
     {
-        _boxCollider = gameObject.GetComponent<BoxCollider2D>();
-        Center = _boxCollider.offset;
-        SIze = _boxCollider.size;
-        GOPosition = transform.position;
-        StartCoroutine(update(2f));
-
+        StartCoroutine(ItemSpawnCo());
     }
 
-    IEnumerator update(float Timer)
+    IEnumerator ItemSpawnCo()
     {
-        while (true)
-        {
-            int ranobj = Random.Range(1,GameObjects.Length);
-            float ranx = Random.Range(GOPosition.x + Center.x - SIze.x/2,GOPosition.x + Center.x + SIze.x/2);
-            float rany = Random.Range(GOPosition.y + Center.y- SIze.y/2,GOPosition.y + Center.y + SIze.y/2);
-            print($"{ranx} {rany}");
-
-            Instantiate(GameObjects[ranobj]).transform.position = new Vector2(ranx, rany);
-
-            yield return new WaitForSeconds(Timer);
-        }
+        float time = Random.Range(7f, 9f);
+        yield return new WaitForSeconds(time);
         
+        int Data_count = Random.Range(0, data.Length);
+        float x = Random.Range(data[Data_count].xPos.x,data[Data_count].xPos.y);
+
+        int a = Random.Range(0, GameObjects.Length);
+
+        GameObject b= Instantiate(GameObjects[a]);
+
+        b.transform.position = new Vector2(x, 0);
+
+        StartCoroutine(ItemSpawnCo());
     }
 }
