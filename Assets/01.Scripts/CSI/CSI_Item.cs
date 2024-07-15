@@ -45,10 +45,10 @@ public class CSI_Item : MonoBehaviour
 
     private void Awake()
     {
+        Player = GameObject.Find("Player_CSI");//플래이어 이름을 넣어야합니다......[SerializeField]--사용 금지--(양산 불가.)
         Player_item = GameObject.Find("Item_");//플래이어 자식으로 있는 아이템
         Ihand = false;
         can_change = false;
-        Player = GameObject.Find("Player_CSI");//플래이어 이름을 넣어야합니다......[SerializeField]--사용 금지--(자동화 불가.)
 
     }
     /// <summary>
@@ -58,7 +58,7 @@ public class CSI_Item : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F)&&can_get_item)//F 를 눌렀고,아이템 주변에 플래이어가 있고,나 자신이 던지고 있는중이 아니면
         {
-            if (can_change&&transform.parent == null)//can_change가 켜져 있으면 손에 아이템이 있고 바꿀수 있다.
+            if (can_change&&transform.parent)//can_change가 켜져 있으면 손에 아이템이 있고 바꿀수 있다.
             { //땅에 있는 스크
                 GameObject fire_item;
                 
@@ -91,21 +91,21 @@ public class CSI_Item : MonoBehaviour
                 fire_item.GetComponent<CSI_Item>().Ihand = true;
                 if (!itahamsu)
                 {
-                    if (Player.transform.localScale.x>0)
+                    if (Player.transform.rotation.y == 0)
                     {
-                        fire_item.GetComponent<Rigidbody2D>().velocity += Vector2.right *Time.fixedDeltaTime * speed;
+                        fire_item.GetComponent<Rigidbody2D>().velocity += Vector2.right * (Time.fixedDeltaTime * speed);
 
                     }
                     else
                     {
-                        fire_item.GetComponent<Rigidbody2D>().velocity += Vector2.left *Time.fixedDeltaTime * speed;
+                        fire_item.GetComponent<Rigidbody2D>().velocity += Vector2.left * (Time.fixedDeltaTime * speed);
 
                     }
                 }
                 else
                 {
                     startPos = fire_item.transform.position;
-                    if (Player.transform.localScale.x>0)
+                    if (Player.transform.rotation.y == 0)
                         endPos = startPos + new Vector3(10, 0, 0);
                     else
                     {
