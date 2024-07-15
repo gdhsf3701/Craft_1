@@ -12,6 +12,7 @@ public class PlayerAttack3State : PlayerAttackState
     {
         base.Enter();
         Time.timeScale = 0.3f;
+        SkillCoolUI.Instance.NormalAttackSprite(0);
     }
 
     public override void Exit()
