@@ -8,18 +8,19 @@ public class UIManager : MonoBehaviour
 {
     private StageTimeLimit time;
     [SerializeField] private TMP_Text timeText;
-
     
     private void Start()
     {
-        time= FindObjectOfType<StageTimeLimit>();
-        timeText.text = $"남은시간:{time.Time}";
-        if (time != null)
+        if (timeText != null)
         {
-            time.OnNowTimeChanged += HandleNowTimeChanged;
+            time= FindObjectOfType<StageTimeLimit>();
+            timeText.text = $"남은시간:{time.Time}";
+            if (time != null)
+            {
+                time.OnNowTimeChanged += HandleNowTimeChanged;
+            }
         }
     }
-
     private void HandleNowTimeChanged(int newTime)
     {
         timeText.text = $"남은시간:{time.Time - newTime}";
@@ -30,6 +31,7 @@ public class UIManager : MonoBehaviour
         if (time != null)
         {
             time.OnNowTimeChanged -= HandleNowTimeChanged;
-        }
+        }   
     }
+    
 }
