@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -38,7 +39,15 @@ public class Player : Agent
         stateMachine.AddState(PlayerEnum.Wire,new PlayerWireState(this,stateMachine,"Wire"));
         
         stateMachine.Initialize(PlayerEnum.Idle, this);
+        
+        PlayerInput.OnJumpKeyEvent += HandleJumpKeyEvent;
     }
+
+    private void OnDestroy()
+    {
+        PlayerInput.OnJumpKeyEvent -= HandleJumpKeyEvent;
+    }
+
     public void Attack()
     {
         damageData = damageDataList[comboCount];
@@ -54,10 +63,24 @@ public class Player : Agent
         
         comboCount++;
     }
+    private void HandleJumpKeyEvent()
+    {
+        if (MovementCompo.isGround.Value)
+            JumpProcess();
+    }
+
+    public void HitStateChange()
+    {
+        stateMachine.ChangeState(PlayerEnum.Hit);
+    }
     
     private void Update()
     {
         stateMachine.CurrentState.UpdateState();
+        
+        float x = PlayerInput.Movement.x;
+        SpriteFlip(x);
+        MovementCompo.SetMoveMent(x);
 
         if (Input.GetKeyDown(KeyCode.P))
         {

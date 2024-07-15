@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CSI_Item : MonoBehaviour
 {
@@ -13,8 +14,8 @@ public class CSI_Item : MonoBehaviour
     //땅에 닫기까지 걸리는 시간
     private float timer;
     private float timeToFloor;
-    
-    
+
+    public UnityEvent OnDstroyEvent;
     private static Vector3 Parabola(Vector3 start, Vector3 end, float height, float t)
     {
         Func<float, float> f = x => -4 * height * x * x + 4 * height * x;
@@ -121,7 +122,7 @@ public class CSI_Item : MonoBehaviour
     /// ------------------이 위는 중요 
     /// </summary>
 
-    private void Throwandthouch()
+    public void Throwandthouch()
     {
         Destroy(gameObject);
     }
@@ -132,7 +133,7 @@ public class CSI_Item : MonoBehaviour
         {
             if (other.transform.CompareTag("Ground"))
             {
-                Throwandthouch();//땅에 닿으면 지우기
+                OnDstroyEvent?.Invoke();
             }
         }
         if (other.transform.CompareTag("Player"))

@@ -20,6 +20,7 @@ public class PlayerWireState : PlayerState
     {
         _player.MovementCompo.rbCompo.bodyType = RigidbodyType2D.Dynamic;
         _player.PlayerInput._controls.Enable();
+        Zipline.isMove = false;
         base.Exit();
     }
 
