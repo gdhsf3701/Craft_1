@@ -41,7 +41,7 @@ public class GunKnifeEnemy : Enemy, Ipoolable
 
     private void Update()
     {
-        stateMachine.CurrentState.UpdateState(); // ÇöÀç »óÅÂÀÇ ¾÷µ¥ÀÌÆ® ¿ì¼± ½ÇÇà
+        stateMachine.CurrentState.UpdateState(); // í˜„ì¬ ìƒíƒœì˜ ì—…ë°ì´íŠ¸ ìš°ì„  ì‹¤í–‰
 
         if (targerTrm != null && IsDead == false)
         {
@@ -58,13 +58,13 @@ public class GunKnifeEnemy : Enemy, Ipoolable
         stateMachine.ChangeState(EnemyEnum.Dead);
     }
 
-    public void ResetItem() //Á×Àº ÈÄ ´Ù½Ã ¼ÒÈ¯µÉ¶§
+    public void ResetItem() //ì£½ì€ í›„ ë‹¤ì‹œ ì†Œí™˜ë ë•Œ
     {
-        CanStateChangeable = true; // »óÅÂ¸¦ º¯°æ ÇÒ ¼ö ÀÖ´ÂÁö, ¾Æ´ÑÁö
-        IsDead = false; // Á×¾ú´ÂÁö ¾Æ´ÑÁö
-        targerTrm = null; // Å¸°Ù Æ®·£½ºÆû ÃÊ±âÈ­
-        HealthCompo.ResetHealth(); // Ã¼·Â ÃÊ±âÈ­
-        stateMachine.ChangeState(EnemyEnum.Idle); // idle »óÅÂ·Î ¹Ù²Ù±â
-        gameObject.layer = _enemyLayer; // ·¹ÀÌ¾î ¿¡³Ê¹Ì ·¹ÀÌ¾î·Î ¹Ù²Ù±â
+        CanStateChangeable = true; // ìƒíƒœë¥¼ ë³€ê²½ í•  ìˆ˜ ìˆëŠ”ì§€, ì•„ë‹Œì§€
+        IsDead = false; // ì£½ì—ˆëŠ”ì§€ ì•„ë‹Œì§€
+        targerTrm = null; // íƒ€ê²Ÿ íŠ¸ëœìŠ¤í¼ ì´ˆê¸°í™”
+        HealthCompo.ResetHealth(); // ì²´ë ¥ ì´ˆê¸°í™”
+        stateMachine.ChangeState(EnemyEnum.Idle); // idle ìƒíƒœë¡œ ë°”ê¾¸ê¸°
+        gameObject.layer = _enemyLayer; // ë ˆì´ì–´ ì—ë„ˆë¯¸ ë ˆì´ì–´ë¡œ ë°”ê¾¸ê¸°
     }
 }

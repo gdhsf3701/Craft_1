@@ -1,8 +1,8 @@
 using Cinemachine;
-using DG.Tweening;
+using TMPro;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class Cover : MonoBehaviour
@@ -12,6 +12,7 @@ public class Cover : MonoBehaviour
     private bool _isPlayer = false;
 
     Player _player;
+    GameObject player;
 
     CinemachineVirtualCamera camera;
 
@@ -29,13 +30,15 @@ public class Cover : MonoBehaviour
     private void Start()
     {
         camera = FindAnyObjectByType<CinemachineVirtualCamera>();
-        renderer = _player.GetComponentInChildren<SpriteRenderer>();
+        player = GameObject.Find("Player");
+        renderer = player.GetComponentInChildren<SpriteRenderer>();
         maxCameraSize -= 0.1f;
         minCameraSize += 0.1f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        _player = collision.GetComponent<Player>();
         text.gameObject.SetActive(true);
         _isPlayer = true;
     }
@@ -51,7 +54,7 @@ public class Cover : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                //플레이어가 에너미에게 안보이는 코드
+                player.gameObject.layer = LayerMask.NameToLayer("HidePlayer");
                 renderer.color = Color.clear;
 
                 saveSpeed = _player.MovementCompo.moveSpeed;
@@ -74,7 +77,7 @@ public class Cover : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                //플레이어가 에너미에게 보이는 코드
+                player.gameObject.layer = LayerMask.NameToLayer("Player");
                 renderer.color = Color.white;
                 renderer.enabled = true;
                 hide = false;
