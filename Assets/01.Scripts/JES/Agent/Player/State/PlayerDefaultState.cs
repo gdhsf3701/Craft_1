@@ -8,34 +8,19 @@ public abstract class PlayerDefaultState : PlayerState
     {
     }
 
-    public override void Enter()
-    {
-        base.Enter();
-        
-        _player.HealthCompo.OnHitEvent.AddListener(HandleHitEvent);
-        _player.PlayerInput.OnJumpKeyEvent += HandleJumpKeyEvent;
-    }
     
-    private void HandleHitEvent()
-    {
-        _stateMachine.ChangeState(PlayerEnum.Hit);
-    }
-    private void HandleJumpKeyEvent()
-    {
-        if (_player.MovementCompo.isGround.Value)
-            _player.JumpProcess();
-    }
 
     public override void UpdateState()
     {
         base.UpdateState();
-        
-        float x = _player.PlayerInput.Movement.x;
-        _player.SpriteFlip(x);
-        _player.MovementCompo.SetMoveMent(x);
-        
+   
         if(_player.comboCount<=0) return;
         
+        ComboResetTimer();
+    }
+
+    private void ComboResetTimer()
+    {
         if (_player.lastAttackTime + 0.7 < Time.time)
         {
             _player.comboCount = 0;
@@ -43,14 +28,7 @@ public abstract class PlayerDefaultState : PlayerState
             _player.lastAttackTime = Time.time;
             SkillCoolUI.Instance.NormalAttackCoolStart(_player.attackCoolDown);
             SkillCoolUI.Instance.ComboImageSetUp();
+            SkillCoolUI.Instance.NormalAttackSprite(0);
         }
     }
-
-    public override void Exit()
-    {
-        _player.PlayerInput.OnJumpKeyEvent -= HandleJumpKeyEvent;
-        _player.HealthCompo.OnHitEvent.RemoveListener(HandleHitEvent);
-        base.Exit();
-    }
-    
 }
