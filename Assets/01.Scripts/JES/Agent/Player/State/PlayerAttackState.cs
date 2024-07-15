@@ -21,20 +21,18 @@ public class PlayerAttackState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        
+        _player.PlayerInput._controls.Disable();
         _player.MovementCompo.StopImmediately(false);
-        _player.HealthCompo.OnHitEvent.AddListener(HandleHitEvent);
         SkillCoolUI.Instance.ComboImageSetUp();
+        SkillCoolUI.Instance.ComboCooldown();
     }
 
-    private void HandleHitEvent()
-    {
-        _stateMachine.ChangeState(PlayerEnum.Hit);
-    }
+
 
     public override void Exit()
     {
-        SkillCoolUI.Instance.ComboCooldown();
-        _player.HealthCompo.OnHitEvent.RemoveListener(HandleHitEvent);
+        _player.PlayerInput._controls.Enable();
         _player.lastAttackTime = Time.time;
         base.Exit();
     }

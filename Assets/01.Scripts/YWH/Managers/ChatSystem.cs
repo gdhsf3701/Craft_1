@@ -25,7 +25,7 @@ public class ChatSystem : MonoSingleton<ChatSystem>
 
     public void TypCoStart(string name, string text, float rate)
     {
-        PlayerManager.Instance.Player.PlayerInput._controls.Disable();
+       
         endText = false;
         StartCoroutine(Typing(text, rate));
         chatName.text = name;
@@ -35,7 +35,7 @@ public class ChatSystem : MonoSingleton<ChatSystem>
     public void StopTyp()
     {
         canvasGroup.DOFade(0, 1);
-        PlayerManager.Instance.Player.PlayerInput._controls.Enable();
+      
     }
 
 

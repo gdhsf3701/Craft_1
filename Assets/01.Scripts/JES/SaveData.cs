@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class SaveData
 {
-    public float playTime=0;
-    public string playDate ="";
-    public Vector2 spawnPos=new Vector2(0,0);
+    public float playTime;
+    public string playDate;
+
+    public Vector2 spawnPos;
     public int playerHp=4;
+    
+    public string currentScene;
+    public int StageNumber;
 }

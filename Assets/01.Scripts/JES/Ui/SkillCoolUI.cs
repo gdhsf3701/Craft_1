@@ -7,12 +7,18 @@ using UnityEngine.UI;
 public class SkillCoolUI : MonoSingleton<SkillCoolUI>
 {
     [SerializeField] private Image normalAttack,comboImage;
+    [SerializeField] private List<Sprite> attackSprites;
 
     private Tween _tween;
     public void NormalAttackCoolStart(float timer)
     {
         normalAttack.fillAmount = 0;
         normalAttack.DOFillAmount(1,timer);
+    }
+
+    public void NormalAttackSprite(int index)
+    {
+        normalAttack.sprite = attackSprites[index];
     }
 
     public void ComboImageSetUp()
