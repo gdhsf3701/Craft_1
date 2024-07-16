@@ -31,6 +31,11 @@ public class CSI_Death_Sc : MonoBehaviour
     {
         Images.DOFade(1, 1);
         Text.transform.DOLocalMoveY(0 + 0, 1, false).SetEase(Ease.Unset);
+        Invoke("UpBt",0.7f);
+    }
+
+    private void UpBt()
+    {
         rePlay_Bt.transform.DOLocalMoveY(-1300 + 540, 1, false).SetEase(Ease.Unset);
         Quit_Bt.transform.DOLocalMoveY(-1300 + 540, 1, false).SetEase(Ease.Unset);
     }
