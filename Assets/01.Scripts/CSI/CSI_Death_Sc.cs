@@ -7,12 +7,17 @@ using UnityEngine.UI;
 
 public class CSI_Death_Sc : MonoBehaviour
 {
-    public Image Background;
-
+    public GameObject Text,rePlay_Bt,Quit_Bt;
+    private Image TextI,rePlay_BtI,Quit_BtI; 
+    private Image Images;
     private void Awake()
     {
-        Background = GetComponent<Image>();
+        //TextI = Text.GetComponent<Image>();
+        rePlay_BtI = rePlay_Bt.GetComponent<Image>();
+        Quit_BtI = Quit_Bt.GetComponent<Image>();
+        Images = GetComponent<Image>();
     }
+
 
     private void Update()
     {
@@ -24,8 +29,10 @@ public class CSI_Death_Sc : MonoBehaviour
 
     public void PlayerDie()
     {
-        transform.DOLocalMoveY(0 + 540, 1, false).SetEase(Ease.Unset);
-        Background.DOFade(0, 1);
+        Images.DOFade(1, 1);
+        Text.transform.DOLocalMoveY(0 + 0, 1, false).SetEase(Ease.Unset);
+        rePlay_Bt.transform.DOLocalMoveY(-1300 + 540, 1, false).SetEase(Ease.Unset);
+        Quit_Bt.transform.DOLocalMoveY(-1300 + 540, 1, false).SetEase(Ease.Unset);
     }
     public void ReStartBt()
     {
