@@ -8,38 +8,23 @@ public class SettingMove : MonoBehaviour
     bool noOpen = true;
     bool isMove = false;
 
-    Vector3 closePosition = new Vector3(0, 0, 0);
-    Vector3 openPosition = new Vector3(0, -1040, 0);
-
     float closeBorderLeftX = -110;
     float closeBorderRightX = 114;
     
     float openBorderLeftX = -820;
     float openBorderRightX = 829;
 
-    float settingSpeed = 1500f;
-
-    float Distance = 10f;
-
+    [SerializeField]
     private GameObject SettingPanel;
 
-    private RectTransform SettingBorderLeft;
-    private RectTransform SettingBorderRight;
-
-    private RectTransform SettingBack;
+    [SerializeField]
+    private RectTransform SettingBorderLeft,SettingBorderRight, SettingBack;
 
     
     private void Awake()
     {
-
-        SettingBorderLeft = transform.GetChild(2).GetChild(0).GetComponent<RectTransform>();
-        SettingBorderRight = transform.GetChild(2).GetChild(1).GetComponent<RectTransform>();
-
-        SettingBack = transform.GetChild(0).GetComponent<RectTransform>(); ;
-        SettingBack.localScale = new Vector3(1,8,0);
-
-        SettingPanel = transform.GetChild(1).gameObject;
         SettingPanel.SetActive(false);
+        SettingBack.localScale = new Vector3(1,8,0);
     }
 
 
@@ -53,13 +38,16 @@ public class SettingMove : MonoBehaviour
 
     public void OnOffSetting()
     {
-        if (noOpen && !isMove)
+        DOTween.KillAll();
+        if (noOpen)
         {
             SettingOpen();
+            noOpen = false;
         }
-        else if (!noOpen && !isMove)
+        else if (!noOpen)
         {
             SettingClose();
+            noOpen = true;
         }
     }
     private void Start()
@@ -68,9 +56,11 @@ public class SettingMove : MonoBehaviour
     }
     private void SettingOpen()
     {
+        Sequence seq = DOTween.Sequence().SetUpdate(true);
+        Time.timeScale = 0;
 
-        Sequence seq = DOTween.Sequence();
         seq.Append(transform.DOLocalMoveY(-970, 1.5f)).SetEase(Ease.OutSine);
+        seq.AppendInterval(1f);
 
         seq.Append(transform.DOLocalMoveY(-950, 0.15f)).SetEase(Ease.OutExpo);
         seq.Append(transform.DOLocalMoveY(-990, 0.175f)).SetEase(Ease.OutExpo);
@@ -79,32 +69,23 @@ public class SettingMove : MonoBehaviour
         seq.Append(transform.DOLocalMoveY(-950, 0.25f)).SetEase(Ease.OutExpo);
         seq.Append(transform.DOLocalMoveY(-990, 0.275f)).SetEase(Ease.OutExpo);
 
+        seq.AppendCallback(()=> SettingPanel.SetActive(true));
         seq.Join(SettingBorderLeft.DOAnchorPosX(openBorderLeftX, 0.75f));
         seq.Join(SettingBorderRight.DOAnchorPosX(openBorderRightX, 0.75f));
         seq.Join(SettingBack.DOScaleX(15, 0.75f));
-        seq.AppendCallback(()=> ESCState());
-        
     }
-
-    private void ESCState()
-    {
-        SettingPanel.SetActive(true);
-        Time.timeScale = 0;
-
-        noOpen = false;
-    }
-
     private void SettingClose()
     {
-        isMove = true;
+        Sequence seq = DOTween.Sequence();
+
         Time.timeScale = 1;
-        SettingPanel.SetActive(false);
 
-        Vector3 target = closePosition - transform.localPosition;
+        seq.Append(SettingBorderLeft.DOAnchorPosX(closeBorderLeftX, 0.75f));
+        seq.Join(SettingBorderRight.DOAnchorPosX(closeBorderRightX, 0.75f));
+        seq.Join(SettingBack.DOScaleX(1, 0.75f));
 
+        seq.AppendCallback(() => SettingPanel.SetActive(false));
+        seq.Append(transform.DOLocalMoveY(162, 1.5f)).SetEase(Ease.OutSine);
 
-
-        noOpen = true;
-        isMove = false;
     }
 }
