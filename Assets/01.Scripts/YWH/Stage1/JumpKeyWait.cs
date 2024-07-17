@@ -15,7 +15,7 @@ public class JumpKeyWait : MonoBehaviour
 
     private void Start()
     {
-        InputReader.OnPunchKeyEvent += HandleAttackKeyEvent;
+        InputReader.OnAttackKeyEvent += HandleAttackKeyEvent;
     }
 
     private void HandleAttackKeyEvent()
