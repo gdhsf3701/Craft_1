@@ -25,8 +25,7 @@ public class StartButtons : MonoBehaviour
     {
         FadeManager.instance.FadeIn(1);
         yield return new WaitForSeconds(1);
-      
-        print("dd");
+        SceneManager.LoadScene(SceneName.Stage0);
     }
 
     IEnumerator Waitasec2()
@@ -35,7 +34,6 @@ public class StartButtons : MonoBehaviour
         yield return new WaitForSeconds(2);
         FadeManager.instance.FadeOut(1);
         ga.SetActive(true);
-
     }
 
     public void LeaveButtonClick()
@@ -45,7 +43,7 @@ public class StartButtons : MonoBehaviour
     }
     public void ContinueButtonClick()
     {
-        Debug.Log("Á¤");
+        Debug.Log("ï¿½ï¿½");
         StartCoroutine(Waitasec2());
     }
 }

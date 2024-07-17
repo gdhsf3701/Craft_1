@@ -21,6 +21,7 @@ public class SaveManager : MonoBehaviour
 {
     public SaveData saveData;
     public static SaveManager Instance;
+    private Transform _playerTrm;
     
     public string dataPath = "SaveData1";
     
@@ -43,15 +44,19 @@ public class SaveManager : MonoBehaviour
  
     private void HandleSceneChaneEvent(Scene arg0, LoadSceneMode arg1)
     {
+        if (_playerTrm == null)
+        {
+            _playerTrm = PlayerManager.Instance.PlayerTrm;
+        }
         //씬 바뀌었을때 해줘야할 행동들
         if (saveData.currentScene!=null&&arg0.name == saveData.currentScene)
         {
-            PlayerManager.Instance.PlayerTrm.position = SaveManager.Instance.saveData.spawnPos;
+            _playerTrm.position= SaveManager.Instance.saveData.spawnPos;
             //saveData.savePoint
         }
         else if(arg0.name!=SceneName.Start&&arg0.name!=SceneName.End)
         {
-            PlayerManager.Instance.PlayerTrm.position = new Vector3(0, 0, 0);
+            _playerTrm.position = new Vector3(0, 0, 0);
         }
     }
 
