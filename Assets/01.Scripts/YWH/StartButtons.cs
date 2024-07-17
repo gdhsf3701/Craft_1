@@ -9,6 +9,12 @@ public class StartButtons : MonoBehaviour
 
     [SerializeField] private GameObject ga;
 
+    private void Start()
+    {
+        FadeManager.instance.FadeOut(1f);  
+    }
+
+
     public void StartButtonClick()
     {
         StartCoroutine(Waitasec());
