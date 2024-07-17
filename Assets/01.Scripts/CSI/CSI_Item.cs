@@ -129,7 +129,7 @@ public class CSI_Item : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)//아이템 주위에 들어올때
     {
-        if (!can_get_item && Ihand &&!other.transform.CompareTag("Player"))
+        if (!can_get_item && Ihand &&!can_change)
         {
             if (other.transform.CompareTag("Ground"))
             {

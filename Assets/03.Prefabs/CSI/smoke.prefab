@@ -1434,9 +1434,9 @@ ParticleSystem:
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 49922
-        atime1: 51850
-        atime2: 41634
+        atime0: 55512
+        atime1: 58018
+        atime2: 58596
         atime3: 63993
         atime4: 63993
         atime5: 63993
@@ -1445,7 +1445,7 @@ ParticleSystem:
         m_Mode: 0
         m_ColorSpace: 0
         m_NumColorKeys: 2
-        m_NumAlphaKeys: 2
+        m_NumAlphaKeys: 3
       minGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
