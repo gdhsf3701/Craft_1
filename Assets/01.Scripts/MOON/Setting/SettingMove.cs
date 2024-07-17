@@ -6,7 +6,6 @@ using UnityEngine;
 public class SettingMove : MonoBehaviour
 {
     bool noOpen = true;
-    bool isMove = false;
 
     float closeBorderLeftX = -110;
     float closeBorderRightX = 114;
