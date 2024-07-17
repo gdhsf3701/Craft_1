@@ -5,15 +5,14 @@ using static Controls;
 
 
 [CreateAssetMenu(menuName = "SO/InputReader")]
-public class InputReader : ScriptableObject, IPlayerActions
+public class InputReader : ScriptableObject, ILeftPlayerActions, IRightPlayerActions
 {
     public Vector2 Movement { get; private set; }
 
     public Controls _controls;
 
-    public event Action OnPunchKeyEvent;
+    public event Action OnAttackKeyEvent;
     public event Action OnKickKeyEvent;
-    public event Action OnCounterKeyEvent;
     public event Action OnJumpKeyEvent;
     public event Action OnSkillEvent;
 
@@ -24,20 +23,19 @@ public class InputReader : ScriptableObject, IPlayerActions
         {
             _controls = new Controls();
         }
-        _controls.Player.SetCallbacks(this);
-        _controls.Player.Enable();
-
+        _controls.LeftPlayer.SetCallbacks(this);
+        _controls.LeftPlayer.Enable();
+        
+        _controls.RightPlayer.SetCallbacks(this);
     }
-
-    public void OnCounter(InputAction.CallbackContext context)
-    {
-        if(context.performed) OnCounterKeyEvent?.Invoke();
-
-    }
-
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed) OnJumpKeyEvent?.Invoke();
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed) OnAttackKeyEvent?.Invoke();
     }
 
     public void OnKick(InputAction.CallbackContext context)
@@ -45,18 +43,12 @@ public class InputReader : ScriptableObject, IPlayerActions
         if (context.performed) OnKickKeyEvent?.Invoke();
     }
 
+    public void OnKnife(InputAction.CallbackContext context)
+    {
+        if (context.performed) OnSkillEvent?.Invoke();
+    }
     public void OnMovement(InputAction.CallbackContext context)
     {
         Movement = context.ReadValue<Vector2>();
-    }
-
-    public void OnPunch(InputAction.CallbackContext context)
-    {
-        if (context.performed) OnPunchKeyEvent?.Invoke();
-    }
-
-    public void OnSkill(InputAction.CallbackContext context)
-    {
-        if (context.performed) OnSkillEvent?.Invoke();
     }
 }

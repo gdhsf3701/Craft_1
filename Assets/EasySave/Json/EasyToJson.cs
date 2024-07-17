@@ -56,7 +56,7 @@ namespace EasySave.Json
             {
                 Debug.Log("파일이 존재하지 않습니다.");
                 Debug.Log("파일을 생성합니다.");
-                T defaultObj = default;
+                T defaultObj = default(T);
                 Debug.Log(defaultObj);
                 ToJson(defaultObj, jsonFileName, true);
                 return defaultObj;

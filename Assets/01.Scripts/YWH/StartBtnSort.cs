@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class StartBtnSort : MonoBehaviour
 {
+    [SerializeField]
     bool _isFirst=true;
     [SerializeField] GameObject _firstUI, _defaultUI;
     private void Start()
