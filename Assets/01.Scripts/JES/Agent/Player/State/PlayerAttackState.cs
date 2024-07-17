@@ -25,13 +25,13 @@ public class PlayerAttackState : PlayerState
         _player.PlayerInput._controls.Disable();
         _player.MovementCompo.StopImmediately(false);
         SkillCoolUI.Instance.ComboImageSetUp();
-        SkillCoolUI.Instance.ComboCooldown();
     }
 
 
 
     public override void Exit()
     {
+        SkillCoolUI.Instance.ComboCooldown();
         _player.PlayerInput._controls.Enable();
         _player.lastAttackTime = Time.time;
         base.Exit();

@@ -6,8 +6,10 @@ public class SaveData
     public string playDate;
 
     public Vector2 spawnPos;
-    public int playerHp=4;
+    public int savePoint;
     
+    public int playerHp=4;
+ 
     public string currentScene;
     public int StageNumber;
 }
