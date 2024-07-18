@@ -1,12 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using System;
 
 public class JumpKeyWait : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    [SerializeField] GameObject scarecrow;
+    [SerializeField] private CanvasGroup keyUI;
+    [SerializeField] private InputReader InputReader;
+    bool istouched;
+    private bool _isAttack=false;
+
+
+    private void Start()
     {
-        ChatSystem.Instance.TypCoStart("금자월", "또.. 이런건가?", 0.2f);
+        InputReader.OnAttackKeyEvent += HandleAttackKeyEvent;
     }
 
+    private void HandleAttackKeyEvent()
+    {
+        _isAttack = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!istouched)
+        {
+         StartCoroutine(Musul());
+                istouched = true;
+        }
+       
+
+    }
+
+    IEnumerator Musul()
+    {
+        InputReader._controls.Disable();
+        ChatSystem.Instance.TypCoStart("스승님", "이제 익숙해진 것 같아 보이니..", 0.2f);
+        yield return new WaitUntil(() => ChatSystem.Instance.endText == true);
+        ChatSystem.Instance.TypCoStart("스승님", "다음은 무술이다!", 0.2f);
+        scarecrow.SetActive(true);
+        yield return new WaitUntil(() => ChatSystem.Instance.endText == true);
+        keyUI.gameObject.SetActive(true);
+        InputReader._controls.Enable();
+        keyUI.DOFade(1, 1);
+        yield return new WaitUntil(() => _isAttack==true);
+
+        keyUI.DOFade(0, 1).SetDelay(0.5f);
+
+
+    }
 }

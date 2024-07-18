@@ -13,17 +13,7 @@ public class OpenSetting : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (!isopen)
-            {
-            window.DOAnchorPos(new Vector3(-421, 4), 1).SetEase(Ease.OutQuart);
-            isopen = true;
-            }
-            
-            else
-            {
-                window.DOAnchorPos(new Vector3(-1389, 4), 1).SetEase(Ease.OutQuart);
-                isopen = false;
-            }
+            clicktoopen();
         }
        
     }

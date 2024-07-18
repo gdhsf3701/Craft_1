@@ -51,8 +51,12 @@ public class MasterMeet : MonoBehaviour
     }
     IEnumerator Jump()
     {
+        ChatSystem.Instance.TypCoStart("스승님", "다음은 이걸 뛰어넘을 수 있겠느냐?", 0.2f);
+        yield return new WaitUntil(() => ChatSystem.Instance.endText == true);
+        ChatSystem.Instance.StopTyp();
         keyUI.DOFade(1, 1);
         yield return new WaitUntil(() => PlayerManager.Instance.Player.MovementCompo.rbCompo.velocity.y>0);
+
         keyUI.DOFade(0, 1).SetDelay(0.5f);
 
     }
